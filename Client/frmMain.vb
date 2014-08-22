@@ -38,7 +38,9 @@
             'connect
             myIPAddress = getINI(sfile, "Settings", "ip")
             myPortNumber = getINI(sfile, "Settings", "port")
+            localPort = getINI(sfile, "Settings", "localport")
             connect()
+
 
         Catch ex As Exception
             appEventLog_Write("errorfrmChat_Load :", ex)

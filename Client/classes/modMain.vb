@@ -25,7 +25,7 @@ Module modMain
     Public instructionY As Integer
     Public windowX As Integer
     Public windowY As Integer
-
+    Public localPort As Integer 'Kyle add 2014-8-22 for running multiple clients on 1 pc
 #Region " Winsock Code "
     Private Sub wskClient_DataArrival(ByVal sender As Object, ByVal e As WinsockDataArrivalEventArgs) Handles wskClient.DataArrival
         Try
@@ -69,7 +69,7 @@ Module modMain
             wskClient = New Winsock
             wskClient.BufferSize = 8192
             wskClient.LegacySupport = False
-            wskClient.LocalPort = 8080
+            wskClient.LocalPort = localPort
             wskClient.MaxPendingConnections = 1
             wskClient.Protocol = WinsockProtocols.Tcp
             wskClient.RemotePort = myPortNumber
