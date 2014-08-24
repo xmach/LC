@@ -41,11 +41,25 @@
             localPort = getINI(sfile, "Settings", "localport")
             connect()
 
-
+            BindData()
         Catch ex As Exception
             appEventLog_Write("errorfrmChat_Load :", ex)
         End Try
 
+    End Sub
+    Private Sub BindData()
+        BindRowData(New String() {"10,10", "0,0", "3,3"})
+        BindRowData(New String() {"2,2", "20,20", "0,0"})
+        BindRowData(New String() {"5,5", "3,3", "20,20"})
+    End Sub
+    Private Sub BindRowData(ByVal rowData As String())
+        Dim index As Integer = Me.DataGridView1.Rows.Add()
+        Dim newRow As DataGridViewRow = Me.DataGridView1.Rows(index)
+        For i As Integer = 0 To rowData.Length - 1
+            newRow.Cells(i).Value = rowData(i)
+        Next
+
+        'Me.DataGridView1.Rows.Add(New DataGridViewRow())
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick

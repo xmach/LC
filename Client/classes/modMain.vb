@@ -4,6 +4,9 @@
 
 Imports System.Drawing.Drawing2D
 Imports System.Windows.Forms
+Imports System.IO
+Imports System.Xml.Serialization
+Imports LC.Message
 
 Module modMain
     Public sfile As String
@@ -240,6 +243,10 @@ Module modMain
 
                 Case "15"
 
+                Case "DP"
+                    'display vocabulary
+                    DisplayVoca(msgtokens(1))
+
             End Select
         Catch ex As Exception
             appEventLog_Write("error takeMessage:", ex)
@@ -247,6 +254,11 @@ Module modMain
 
     End Sub
 
+    Friend Sub DisplayVoca(ByVal sinsr As String)
+        Dim memStream As MemoryStream = New MemoryStream(System.Text.Encoding.ASCII.GetBytes(sinsr))
+        Dim serializer As New XmlSerializer(GetType(LC.Message.clsMessage))
+        Dim msg As LC.Message.clsMessage = CType(serializer.Deserialize(memStream), clsMessage)
+    End Sub
 
 
     Public Sub begin(ByVal sinstr As String)

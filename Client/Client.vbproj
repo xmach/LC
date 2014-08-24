@@ -172,6 +172,12 @@
   <ItemGroup>
     <Content Include="chapman.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Message\Message\Message.vbproj">
+      <Project>{AFD5467B-2DD9-4FD7-88E4-49DD22BCA94B}</Project>
+      <Name>Message</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
