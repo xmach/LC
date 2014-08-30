@@ -1,4 +1,5 @@
-﻿Public Class frmNames
+﻿Imports LC
+Public Class frmNames
 
     Private Sub cmdSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSubmit.Click
         Try
@@ -21,7 +22,7 @@
                 outstr &= "  " & txtName3.Text
             End If
 
-            wskClient.Send("07", outstr)
+            'wskClient.Send("07", outstr)
 
             temps = frmMain.txtProfit.Text
             temps = CDbl(temps) / 100

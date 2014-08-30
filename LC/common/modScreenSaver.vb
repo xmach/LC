@@ -1,4 +1,4 @@
-﻿Module modScreenSaver
+﻿Public Module modScreenSaver
     Public Declare Function SystemParametersInfo Lib "user32" Alias "SystemParametersInfoA" (ByVal uAction As Integer, ByVal uParam As Integer, ByVal lpvParam As Integer, ByVal fuWinIni As Integer) As Integer
 
     Public Function ToggleScreenSaverActive(ByRef Active As Boolean) As Boolean

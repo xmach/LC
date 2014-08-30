@@ -98,7 +98,7 @@ Public Class frmMain
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        Dim message As New LC.MessageBag()
+        Dim message As New MessageBag()
         message.MsgType = MsgType.Client_finishedInstructions
         modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
 
