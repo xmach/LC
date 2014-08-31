@@ -32,6 +32,7 @@ Module modMain
 
     'kyle
     Private m_status As ClientStatusBase = New StatusNotConnected()
+    Public m_meanings As String()
     Public Property GameStatus() As ClientStatusBase
         Get
             Return m_status

@@ -14,6 +14,8 @@ Public Class MessageBag
        Public Phase1Decision As String
     <XmlAttribute()> _
     Public Phase2Decision As String
+    <XmlAttribute()> _
+    Public CounterPartPhase1Decision As String
     <XmlElement()> _
     Public Decision As String()
     <XmlElement()> _

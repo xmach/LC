@@ -23,8 +23,10 @@ Public Class StatusCommunicationDicision
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_feedbackPhase1Decision Then
             modMain.GameStatus = New StatusPhase2Decision
+            frmMain.ShowPhase2(m)
         ElseIf m.MsgType = LC.MsgType.Server_feedbackResult Then
             modMain.GameStatus = New StatusNewRound
+            frmMain.showResult(m)
         End If
     End Sub
 End Class

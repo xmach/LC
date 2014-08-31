@@ -24,7 +24,7 @@ Public Class frmNames
 
             'wskClient.Send("07", outstr)
 
-            temps = frmMain.txtProfit.Text
+            '  temps = frmMain.txtProfit.Text
             temps = CDbl(temps) / 100
             frmMain.txtMessages.Text = "Your earnings are $" & Format(CDbl(temps), "0.00") & "."
 
