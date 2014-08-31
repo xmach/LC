@@ -48,9 +48,9 @@ Partial Class frmMain
         Me.lblInventCost = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
-        Me.ListView1 = New System.Windows.Forms.ListView()
+        Me.lstComm = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ListView2 = New System.Windows.Forms.ListView()
+        Me.lstPrivate = New System.Windows.Forms.ListView()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
@@ -194,41 +194,41 @@ Partial Class frmMain
         Me.Label8.TabIndex = 20
         Me.Label8.Text = "Private List"
         '
-        'ListView1
+        'lstComm
         '
-        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
+        Me.lstComm.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
         ListViewGroup1.Header = "a"
         ListViewGroup1.Name = "ListViewGroupA"
         ListViewGroup2.Header = "b"
         ListViewGroup2.Name = "ListViewGroupB"
         ListViewGroup3.Header = "c"
         ListViewGroup3.Name = "ListViewGroupC"
-        Me.ListView1.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1, ListViewGroup2, ListViewGroup3})
+        Me.lstComm.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1, ListViewGroup2, ListViewGroup3})
         ListViewItem1.Group = ListViewGroup1
         ListViewItem2.Group = ListViewGroup2
         ListViewItem3.Group = ListViewGroup3
-        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1, ListViewItem2, ListViewItem3})
-        Me.ListView1.Location = New System.Drawing.Point(74, 112)
-        Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(327, 200)
-        Me.ListView1.TabIndex = 22
-        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.lstComm.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1, ListViewItem2, ListViewItem3})
+        Me.lstComm.Location = New System.Drawing.Point(74, 112)
+        Me.lstComm.Name = "lstComm"
+        Me.lstComm.Size = New System.Drawing.Size(327, 200)
+        Me.lstComm.TabIndex = 22
+        Me.lstComm.UseCompatibleStateImageBehavior = False
         '
-        'ListView2
+        'lstPrivate
         '
         ListViewGroup4.Header = "a"
         ListViewGroup4.Name = "ListViewGroup1"
         ListViewGroup5.Header = "b"
         ListViewGroup5.Name = "ListViewGroup2"
-        Me.ListView2.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup4, ListViewGroup5})
+        Me.lstPrivate.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup4, ListViewGroup5})
         ListViewItem4.Group = ListViewGroup4
         ListViewItem5.Group = ListViewGroup5
-        Me.ListView2.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem4, ListViewItem5})
-        Me.ListView2.Location = New System.Drawing.Point(463, 112)
-        Me.ListView2.Name = "ListView2"
-        Me.ListView2.Size = New System.Drawing.Size(307, 200)
-        Me.ListView2.TabIndex = 23
-        Me.ListView2.UseCompatibleStateImageBehavior = False
+        Me.lstPrivate.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem4, ListViewItem5})
+        Me.lstPrivate.Location = New System.Drawing.Point(463, 112)
+        Me.lstPrivate.Name = "lstPrivate"
+        Me.lstPrivate.Size = New System.Drawing.Size(307, 200)
+        Me.lstPrivate.TabIndex = 23
+        Me.lstPrivate.UseCompatibleStateImageBehavior = False
         '
         'Label9
         '
@@ -398,8 +398,8 @@ Partial Class frmMain
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.ListView2)
-        Me.Controls.Add(Me.ListView1)
+        Me.Controls.Add(Me.lstPrivate)
+        Me.Controls.Add(Me.lstComm)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.lblInventCost)
@@ -437,9 +437,9 @@ Partial Class frmMain
     Friend WithEvents lblInventCost As System.Windows.Forms.Label
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents ListView1 As System.Windows.Forms.ListView
+    Friend WithEvents lstComm As System.Windows.Forms.ListView
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ListView2 As System.Windows.Forms.ListView
+    Friend WithEvents lstPrivate As System.Windows.Forms.ListView
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents Label10 As System.Windows.Forms.Label

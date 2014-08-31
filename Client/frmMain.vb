@@ -77,10 +77,17 @@ Public Class frmMain
 
    
 
-    Public Sub DisplayLanguageDecision()
+    Public Sub DisplayLanguageDecision(ByVal m As MessageBag)
         'TODO 
         MessageBox.Show("DisplayLanguageDecision")
-        BindData()
+        Me.lstComm.Clear()
+        For i As Integer = 0 To 100
+            Dim grp As New ListViewGroup(modMain.m_meanings(i))
+            Me.lstComm.Groups.Add(grp)
+        Next
+
+
+
     End Sub
 
     Private Sub BindData()
