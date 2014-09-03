@@ -60,7 +60,7 @@ Public Class StatusNewRound
 
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_languageDecision Then
-            Me.MainForm.DisplayLanguageDecision()
+            Me.MainForm.DisplayLanguageDecision(m)
             modMain.GameStatus = New StatusLanguageDicision
         End If
     End Sub
@@ -91,7 +91,7 @@ Public Class StatusReadInstruction
 
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_languageDecision Then
-            Me.MainForm.DisplayLanguageDecision()
+            Me.MainForm.DisplayLanguageDecision(m)
             modMain.GameStatus = New StatusLanguageDicision
         End If
     End Sub

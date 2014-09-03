@@ -6,6 +6,7 @@ Public Class frmInstructions
     Dim startPressed As Boolean
     Dim currentInstruction As Integer
     Dim MaxPages As Integer
+
     Public Sub nextInstruction(ByVal pageNumber As Integer)
         Try
             'load the next page of instructions
@@ -13,7 +14,6 @@ Public Class frmInstructions
             RichTextBox1.LoadFile(System.Windows.Forms.Application.StartupPath & _
                  "\instructions\page" & pageNumber.ToString() & ".rtf")
 
-            'variables()
 
             RichTextBox1.SelectionStart = 1
             RichTextBox1.ScrollToCaret()
@@ -23,6 +23,21 @@ Public Class frmInstructions
             '    wskClient.Send(cmdStr)
             'End If
 
+            If currentInstruction = Me.MaxPages AndAlso Me.cmdStart.Visible = False Then
+                cmdStart.Visible = True
+            End If
+
+            If currentInstruction > 1 Then
+                Me.cmdBack.Enabled = True
+            Else
+                Me.cmdBack.Enabled = False
+            End If
+
+            If currentInstruction >= Me.MaxPages Then
+                Me.cmdNext.Enabled = False
+            Else
+                Me.cmdNext.Enabled = False
+            End If
         Catch ex As Exception
             appEventLog_Write("error :", ex)
         End Try
@@ -79,7 +94,7 @@ Public Class frmInstructions
             startPressed = False
             currentInstruction = 1
             nextInstruction(currentInstruction)
-            'tempS = False
+
 
         Catch ex As Exception
             appEventLog_Write("error frmInstructions_Load:", ex)
@@ -115,16 +130,14 @@ Public Class frmInstructions
             'load next page of instructions
             currentInstruction += 1
             nextInstruction(currentInstruction)
-            If currentInstruction > 1 Then
-                Me.cmdBack.Enabled = True
-            End If
 
-            If currentInstruction = Me.MaxPages AndAlso Me.cmdStart.Visible = False Then
-                cmdStart.Visible = True
-            End If
-            If currentInstruction = Me.MaxPages Then
-                Me.cmdNext.Enabled = False
-            End If
+            'If currentInstruction > 1 Then
+            '    Me.cmdBack.Enabled = True
+            'End If
+
+            'If currentInstruction = Me.MaxPages Then
+            '    Me.cmdNext.Enabled = False
+            'End If
         Catch ex As Exception
             appEventLog_Write("error cmdNext_Click:", ex)
         End Try
@@ -136,13 +149,13 @@ Public Class frmInstructions
             currentInstruction -= 1
             nextInstruction(currentInstruction)
 
-            If currentInstruction < Me.MaxPages Then
-                Me.cmdNext.Enabled = True
-            End If
-            If currentInstruction = 1 Then
-                Me.cmdBack.Enabled = False
-                'Return
-            End If
+            'If currentInstruction < Me.MaxPages Then
+            '    Me.cmdNext.Enabled = True
+            'End If
+            'If currentInstruction = 1 Then
+            '    Me.cmdBack.Enabled = False
+            '    'Return
+            'End If
 
         Catch ex As Exception
             appEventLog_Write("error cmdBack_Click :", ex)

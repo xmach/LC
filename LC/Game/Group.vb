@@ -3,7 +3,7 @@ Public Class Group
     Private m_playors As Playor()
     Private m_status As StatusBase
     Private m_winsock_collection As WinsockCollection
-    Private m_vocabulary() As Vocabulary
+    'Private m_vocabulary() As Vocabulary
     Private m_decision() As String
     Private m_msgReceived() As Boolean
     Private m_scoreMatrix As ScoreMatrix
@@ -49,14 +49,14 @@ Public Class Group
         End Set
     End Property
 
-    Public Property Vocabulary() As Vocabulary()
-        Get
-            Return Me.m_vocabulary
-        End Get
-        Set(ByVal value As Vocabulary())
-            Me.m_vocabulary = value
-        End Set
-    End Property
+    'Public Property Vocabulary() As Vocabulary()
+    '    Get
+    '        Return Me.m_vocabulary
+    '    End Get
+    '    Set(ByVal value As Vocabulary())
+    '        Me.m_vocabulary = value
+    '    End Set
+    'End Property
 
     Public Property ScoreMatrix() As ScoreMatrix
         Get
@@ -137,7 +137,7 @@ Public Class Group
     Public Sub SendVocabulary()
         If TypeOf Me.m_status Is StatusNewRound Then
             For index As Integer = 0 To Me.Playors.Length - 1
-                Me.Playors(index).SendVocabularyToClient(Me.m_winsock_collection, Me.m_vocabulary(index))
+                Me.Playors(index).SendVocabularyToClient(Me.m_winsock_collection, Me.Playors(index).Vocabulary)
             Next
         Else
             Throw New Exception("Game already started")
