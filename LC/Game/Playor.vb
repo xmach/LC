@@ -11,7 +11,8 @@ Public Class Playor
     Private m_vaca As Vocabulary
     Private m_socketKey As String
     Private m_myIPAddress As String
-    Private m_game As Group
+    Private m_group As Group
+    Private m_cost As Integer
 
     Public Sub New()
 
@@ -82,6 +83,15 @@ Public Class Playor
         End Set
     End Property
 
+    Public Property Cost() As Integer
+        Get
+            Return Me.m_cost
+        End Get
+        Set(ByVal value As Integer)
+            Me.m_cost = value
+        End Set
+    End Property
+
 
     Public Property myIPAddress() As String
         Get
@@ -102,12 +112,12 @@ Public Class Playor
     '    End Set
     'End Property
 
-    Public Property Game() As Group
+    Public Property Group() As Group
         Get
-            Return Me.m_game
+            Return Me.m_group
         End Get
         Set(ByVal value As Group)
-            Me.m_game = value
+            Me.m_group = value
         End Set
     End Property
     Public Sub requsetIP(ByVal wsk_Col As WinsockCollection)
@@ -157,12 +167,12 @@ Public Class Playor
         End Try
     End Sub
 
-    Public Sub ShowPhase1(ByVal wsk_Col As WinsockCollection, ByVal decision As String)
+    Public Sub ShowPhase1(ByVal wsk_Col As WinsockCollection, ByVal decision As String, ByVal scoreMatrix As ScoreMatrix)
         Try
             Dim message As New LC.MessageBag
             message.Phase1Decision = decision
             message.MsgType = MsgType.Server_feedbackPhase1Decision
-
+            message.scoreMatrix = scoreMatrix
             Dim msgStr As String = LC.XmlHelper.XmlSerialize(message, Encoding.UTF8)
             wsk_Col.Send(Me.ID, msgStr)
         Catch ex As Exception
@@ -170,7 +180,7 @@ Public Class Playor
         End Try
     End Sub
 
-    Public Sub ShowResultOfARound(ByVal wsk_Col As WinsockCollection, ByVal Decisions As String(), ByVal scores As Integer())
+    Public Sub ShowResultOfARound(ByVal wsk_Col As WinsockCollection, ByVal Decisions As String(), ByVal scores As Integer)
         Try
             Dim message As New LC.MessageBag
             message.MsgType = MsgType.Server_feedbackPhase1Decision
@@ -184,9 +194,9 @@ Public Class Playor
         End Try
     End Sub
 
-    Public Sub ProcessMsg(ByVal msg As LC.MessageBag)
-        'TODO
-        'handle the status
-        Me.Game.ProcessMsg(msg, Me)
-    End Sub
+    'Public Sub ProcessMsg(ByVal msg As LC.MessageBag)
+    '    'TODO
+    '    'handle the status
+    '    Me.Group.ProcessMsg(msg, Me)
+    'End Sub
 End Class
