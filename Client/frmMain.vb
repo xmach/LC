@@ -3,7 +3,7 @@ Imports LC
 Imports System.Text
 
 Public Class frmMain
-    Private m_frmInstructions As frmInstructions = New frmInstructions()
+    'Private m_frmInstructions As frmInstructions = New frmInstructions()
 
     Private Sub frmMain_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         Try
@@ -49,23 +49,23 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-        Try
+    'Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+    '    Try
 
-        Catch ex As Exception
-            appEventLog_Write("error Timer1_Tick:", ex)
-        End Try
-    End Sub
+    '    Catch ex As Exception
+    '        appEventLog_Write("error Timer1_Tick:", ex)
+    '    End Try
+    'End Sub
 
 
 
-    Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
-        Try
+    'Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
+    '    Try
 
-        Catch ex As Exception
-            appEventLog_Write("error Timer2_Tick client:", ex)
-        End Try
-    End Sub
+    '    Catch ex As Exception
+    '        appEventLog_Write("error Timer2_Tick client:", ex)
+    '    End Try
+    'End Sub
 
     Private Sub frmMain_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         Try
@@ -75,95 +75,65 @@ Public Class frmMain
         End Try
     End Sub
 
-   
 
-    Public Sub DisplayLanguageDecision(ByVal m As MessageBag)
+
+    Public Sub DisplayLanguageDecision(ByVal m As LC.MessageBag)
         'TODO 
-        MessageBox.Show("DisplayLanguageDecision")
-        Me.lstComm.Clear()
-        For i As Integer = 0 To 100
-            Dim grp As New ListViewGroup(modMain.m_meanings(i))
-            Me.lstComm.Groups.Add(grp)
-        Next
+        'MessageBox.Show("DisplayLanguageDecision")
+        Dim f As New frmLangChange()
+        f.Meaning = modMain.m_meanings
+        f.Vocabulary = m.Vocabulary
+        f.Symbols = m.symbols
 
-
-
+        f.ShowDialog()
+        Dim message As New LC.MessageBag()
+        message.MsgType = MsgType.Client_sendLearnInvent
+        message.learn = f.LearnNum
+        message.invent = f.Invent
+        modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
     End Sub
 
-    Private Sub BindData()
-        Throw New NotImplementedException()
+    Public Sub DisplayResult(ByVal m As MessageBag)
+        Dim f As New frmResult()
+        f.DisplayMsg = "Your score is:" & m.Score.ToString()
+        f.ShowDialog()
+        Dim message As New LC.MessageBag()
+        message.MsgType = MsgType.Client_newRound
+        modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
+    End Sub
+
+    Public Sub DisplayPhase1Decision(ByVal m As MessageBag)
+        Dim f As New frmDecision
+        f.IsPhase2 = False
+        f.ScoreMatrix = m.scoreMatrix
+        f.ShowDialog()
+        Dim message As New LC.MessageBag()
+        message.MsgType = MsgType.Client_sendPhase1Decision
+        message.Phase1Decision = f.Phase1Decision
+        modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
+    End Sub
+
+    Public Sub DisplayPhase2Decision(ByVal m As MessageBag)
+        Dim f As New frmDecision
+        f.IsPhase2 = True
+        f.Phase1Decision = m.Phase1Decision
+        f.ScoreMatrix = m.scoreMatrix
+        f.ShowDialog()
+        Dim message As New LC.MessageBag()
+        message.MsgType = MsgType.Client_sendPhase2Decision
+        message.Phase2Decision = f.Phase2Decision
+        modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
     End Sub
 
     Public Sub DisplayInstructions()
-        m_frmInstructions.ShowDialog()
+        Dim f As New frmInstructions()
+        f.ShowDialog()
         'send 
         Dim message As New LC.MessageBag()
         message.MsgType = MsgType.Client_finishedInstructions
         modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
     End Sub
 
-    'Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
-    '    Dim message As New LC.MessageBag()
-    '    message.MsgType = MsgType.Client_newRound
-    '    modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
-    'End Sub
-
-    'Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-    '    Dim message As New MessageBag()
-    '    message.MsgType = MsgType.Client_finishedInstructions
-    '    modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
-
-    'End Sub
-
-    'Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
-    '    Dim message As New LC.MessageBag()
-    '    message.MsgType = MsgType.Client_sendPhase1Decision
-    '    message.Phase1Decision = "a"
-    '    modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
-    'End Sub
-
-    'Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
-    '    Dim message As New LC.MessageBag()
-    '    message.MsgType = MsgType.Client_sendLearnInvent
-    '    message.learn = 1
-    '    message.invent = New Tuple(Of String, String)() {New Tuple(Of String, String)("a", "*-*")}
-    '    modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
-    'End Sub
-
-    'Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
-
-    'End Sub
-    Public Sub ShowPhase1(ByVal m As LC.MessageBag)
-        Dim f As New frmDecision()
-        f.Meanings = modMain.m_meanings
-        'f.Phase1Decision = m.Phase1Decision
-        f.ScoreMatrix = m.scoreMatrix
-        f.IsPhase2 = False
-        f.ShowDialog()
-        Dim newMsg As New LC.MessageBag()
-        newMsg.Phase2Decision = f.Phase1Decision
-        newMsg.MsgType = MsgType.Client_sendPhase1Decision
-        modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(newMsg, Encoding.UTF8))
-    End Sub
-
-    Sub ShowPhase2(ByVal m As LC.MessageBag)
-        Dim f As New frmDecision()
-        f.Meanings = modMain.m_meanings
-        f.Phase1Decision = m.Phase1Decision
-        f.ScoreMatrix = m.scoreMatrix
-        f.IsPhase2 = True
-        f.ShowDialog()
-        Dim newMsg As New LC.MessageBag()
-        newMsg.Phase2Decision = f.Phase2Decision
-        newMsg.MsgType = MsgType.Client_sendPhase2Decision
-        modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(newMsg, Encoding.UTF8))
-    End Sub
-
-    Sub ShowResult(ByVal m As LC.MessageBag)
-        MessageBox.Show("Your score is " & m.Score.ToString() & ",click ok to next round")
-        Dim newMsg As New LC.MessageBag()
-        newMsg.MsgType = MsgType.Client_newRound
-        modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(newmsg, Encoding.UTF8))
-    End Sub
+   
 
 End Class
