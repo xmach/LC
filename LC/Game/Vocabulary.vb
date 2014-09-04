@@ -55,9 +55,69 @@ Public Class Vocabulary
 
     'End Function
 
-    Function Serialize() As String
-        'TODO serialize
+    ''' <summary>
+    ''' learn N words from private list to common list
+    ''' </summary>
+    ''' <param name="learnCount">how many words to learn</param>
+    ''' <returns>the new common list</returns>
+    Public Function Learn(ByVal learnCount As Integer) As List(Of Tuple(Of String, String))
+        If learnCount > Me.NumberOfPrivate Then
+            Throw New ArgumentException("This vocabulary just contains:" & NumberOfPrivate.ToString() & ", can't learn:" & learnCount.ToString())
+        End If
+        Dim learnList As New List(Of Tuple(Of String, String))(learnCount)
+        For i As Integer = 1 To learnCount
+            Dim word As Tuple(Of String, String) = RemovePrivateSymbol()
+            learnList.Add(word)
+        Next
+        Return learnList
+    End Function
+
+    Public ReadOnly Property NumberOfPrivate() As Integer
+        Get
+            Dim count As Integer = 0
+
+            For index As Integer = 0 To Me.m_privateList.Length - 1
+                count += Me.m_privateList(index).Length
+            Next
+            Return count
+        End Get
+    End Property
+
+    Public ReadOnly Property NumberOfCommon() As Integer
+        Get
+            Dim count As Integer = 0
+            For index As Integer = 0 To Me.m_commlist.Length - 1
+                count += Me.m_commlist(index).Length
+            Next
+            Return count
+        End Get
+    End Property
+
+    Private Function RemovePrivateSymbol() As Tuple(Of String, String)
+
+        For index As Integer = 0 To Me.m_privateList.Length - 1
+            If Not m_privateList(index) Is Nothing AndAlso m_privateList(index).Length > 0 Then
+                Dim tup As New Tuple(Of String, String)(Me.m_meaning(index), m_privateList(index)(0))
+                If m_privateList(index).Length > 1 Then
+                    Array.Copy(m_privateList(index), 1, m_privateList(index), 0, m_privateList(index).Length - 1)
+                End If
+                Array.Resize(m_privateList(index), m_privateList(index).Length - 1)
+                Return tup
+            End If
+        Next
         Return Nothing
+    End Function
+
+    Private Shared Function CopyList(ByVal oldArry As String()())
+        Dim newArray As String()() = New String(oldArry.Length - 1)() {}
+
+        For index As Integer = 0 To newArray.Length - 1
+            If Not oldArry(index) Is Nothing Then
+                newArray(index) = New String(oldArry(index).Length - 1) {}
+                Array.Copy(oldArry(index), newArray(index), oldArry(index).Length)
+            End If
+        Next
+        Return newArray
     End Function
 
     Public Function GetCommonList(ByVal key As String) As ICollection(Of String)
@@ -82,10 +142,13 @@ Public Class Vocabulary
     End Function
 
 
-    Public ReadOnly Property Meanings() As IEnumerable(Of String)
+    Public Property Meanings() As List(Of String)
         Get
             Return Me.m_meaning
         End Get
+        Set(ByVal value As List(Of String))
+            m_meaning = value
+        End Set
     End Property
 
     ''' <summary>
@@ -239,4 +302,24 @@ Public Class Vocabulary
         Next
         writer.Close()
     End Sub
+
+    Public Function ContainsSymbol(ByVal symbol As String) As Boolean
+
+        Dim existsCommon As Boolean = ExistsInArray(Me.m_commlist, symbol)
+        Dim existsPrivate As Boolean = ExistsInArray(Me.m_privateList, symbol)
+        Return existsCommon Or existsPrivate
+    End Function
+
+    Private Function ExistsInArray(ByVal arr As String()(), ByVal symbol As String) As Boolean
+
+        For i As Integer = 0 To arr.Length - 1
+            If arr(i) Is Nothing Then Continue For
+            For j As Integer = 0 To arr(i).Length - 1
+                If arr(i)(j) = symbol Then
+                    Return True
+                End If
+            Next
+        Next
+        Return False
+    End Function
 End Class
