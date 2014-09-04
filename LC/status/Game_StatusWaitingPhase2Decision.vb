@@ -7,10 +7,15 @@ Public Class StatusWaitingPhase2Decision
 
 
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
-        If m.MsgType = MsgType.Client_sendPhase2Decision Then
-            Me.Game.Status = New StatusPhase2DecisionMade
-            'TODO send result to both playors
-            Me.Game.ShowResultAndNewRound()
+        If m.MsgType = LC.MsgType.Client_sendPhase2Decision Then
+            Me.Group.Status = New StatusPhase2DecisionMade(Me.Group)
+            'send result to both playors
+            Me.Group.ShowResult()
         End If
+    End Sub
+
+    Public Sub New(ByVal g As Group)
+        MyBase.New(g)
+
     End Sub
 End Class
