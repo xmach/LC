@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.ComponentModel
 Imports System.Threading
 Imports System.Windows.Forms
@@ -18,17 +18,14 @@ Public Class frmMain
             'Log("Connection received from: " & e.ClientIP)
             'Dim y As New clsUser
             Dim i As Integer
-            Dim ID As String = playerCount + 1
+            Dim ID As String = Game.GetNewPlayorId() ' playerCount + 1
 
-            'connectionCount += 1
-
-            '_users.Add(y)
             Dim x As New Winsock(Me)
             wsk_Col.Add(x, ID)
             x.Accept(e.Client)
 
             If cmdBegin.Enabled = False Then
-                For i = 0 To playerCount - 1
+                For i = 0 To playerList.Length - 1
                     If playerList(i).myIPAddress = e.ClientIP Then
                         playerList(i).socketKey = ID 'wsk_Col.Count - 1
                         Exit For
@@ -37,16 +34,17 @@ Public Class frmMain
                 Exit Sub
             End If
 
+            RegisterPlayor(playerList, ID, e.ClientIP)
+            'playerList(playerCount) = New Playor
+            'playerList(playerCount).ID = ID
+            'playerList(playerCount).socketKey = ID 'wsk_Col.Count - 1
+            'playerList(playerCount).myIPAddress = e.ClientIP
 
-            playerList(playerCount) = New LC.Playor
-            playerList(playerCount).ID = ID
-            playerList(playerCount).socketKey = ID 'wsk_Col.Count - 1
-            playerList(playerCount).myIPAddress = e.ClientIP
-
-            'playerList(playerCount).requsetIP(wsk_Col)
-            playerCount += 1
+            ''playerList(playerCount).requsetIP(wsk_Col)
+            'playerCount += 1
 
             lblConnections.Text = wsk_Col.Count.ToString()
+            RefreshPlayorDisplay()
 
             'appEventLog_Write("connection request: " & e.ClientIP)
         Catch ex As Exception
@@ -95,9 +93,9 @@ Public Class frmMain
             For i = 0 To msgtokens.Length - 1
                 Dim message As LC.MessageBag = LC.XmlHelper.XmlDeserialize(Of LC.MessageBag)(msgtokens(i), System.Text.Encoding.UTF8)
                 message.clientID = sender_key
-                takeMessage(message)
+                Game.takeMessage(message)
             Next
-
+            Me.RefreshPlayorDisplay()
         Catch ex As Exception
             appEventLog_Write("error Wsk_DataArrival:", ex)
         End Try
@@ -106,10 +104,14 @@ Public Class frmMain
     Private Sub Wsk_Disconnected(ByVal sender As Object, ByVal e As System.EventArgs) Handles wsk_Col.Disconnected
         Try
             wsk_Col.Remove(sender)
+            Dim sender_key As String = wsk_Col.GetKey(sender)
+            Dim playorDisconnect As Playor = FindPlayorById(Game.playerList, (sender_key))
+            Dim idx As Integer = Array.IndexOf(Game.playerList, playorDisconnect)
+            If (idx > -1) Then Game.playerList(idx) = Nothing
             'If cmdBegin.Enabled Then Exit Sub
             MsgBox("A client has been disconnected.", MsgBoxStyle.Critical)
             appEventLog_Write("client disconnected")
-            lblConnections.Text = wsk_Col.Count.ToString() '"Connected: " & wsk_Col.Count
+            Me.RefreshPlayorDisplay()
             'playerCount -= 1
         Catch ex As Exception
             appEventLog_Write("error Wsk_Disconnected:", ex)
@@ -209,7 +211,7 @@ Public Class frmMain
 
             wskListener.Listen()
 
-            playerCount = 0
+            'playerCount = 0
 
             lblIP.Text = wskListener.LocalIP
             lblLocalHost.Text = SystemInformation.ComputerName
@@ -244,7 +246,7 @@ Public Class frmMain
             Timer3.Enabled = False
 
             'close data files
-            If summaryDf IsNot Nothing Then summaryDf.Close()
+            'If summaryDf IsNot Nothing Then summaryDf.Close()
 
             'shut down clients
             Dim i As Integer
@@ -263,7 +265,7 @@ Public Class frmMain
             cmdExchange.Enabled = True
 
             lblConnections.Text = 0
-            playerCount = 0
+            ' playerCount = 0
 
             DataGridView1.RowCount = 0
 
@@ -426,6 +428,33 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub RefreshPlayorDisplay()
+        lblConnections.Text = wsk_Col.Count.ToString()
+
+        DataGridView1.RowCount = playerList.Length
+
+        For i As Integer = 0 To playerList.Length - 1
+            If playerList(i) Is Nothing Then
+                DataGridView1.Rows(i).Cells(0).Value = String.Empty
+                DataGridView1.Rows(i).Cells(1).Value = String.Empty
+                DataGridView1.Rows(i).Cells(2).Value = String.Empty
+                DataGridView1.Rows(i).Cells(3).Value = String.Empty
+                DataGridView1.Rows(i).Cells(4).Value = String.Empty
+            Else
+                DataGridView1.Rows(i).Cells(0).Value = playerList(i).ID
+                DataGridView1.Rows(i).Cells(1).Value = playerList(i).Name
+                DataGridView1.Rows(i).Cells(2).Value = playerList(i).myIPAddress
+                If playerList(i).Group Is Nothing Then
+                    DataGridView1.Rows(i).Cells(3).Value = "Connected"
+                Else
+                    DataGridView1.Rows(i).Cells(3).Value = playerList(i).Group.Status.ToString()
+                End If
+                DataGridView1.Rows(i).Cells(4).Value = playerList(i).Score.ToString()
+            End If
+        Next
+
+
+    End Sub
     Private Sub cmdBegin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBegin.Click
         Try
 
@@ -455,28 +484,6 @@ Public Class frmMain
             'str = "Period,data1,data2,data3"
             'summaryDf.WriteLine(str)
 
-            DataGridView1.RowCount = numberOfPlayers
-
-            'showInstructions = getINI(sfile, "gameSettings", "showInstructions")
-
-            'setup for display results
-            'setup player type
-            For i As Integer = 0 To numberOfPlayers - 1
-
-
-                DataGridView1.Rows(i).Cells(0).Value = playerList(i).ID
-                DataGridView1.Rows(i).Cells(1).Value = playerList(i).Name
-                DataGridView1.Rows(i).Cells(2).Value = playerList(i).myIPAddress
-                DataGridView1.Rows(i).Cells(3).Value = "Connected" 'playerList(i).Game.Status.ToString()
-                DataGridView1.Rows(i).Cells(4).Value = playerList(i).Score.ToString()
-                'If showInstructions Then
-                '    DataGridView1.Rows(i - 1).Cells(3).Value = "Page 1"
-                'Else
-                '    DataGridView1.Rows(i - 1).Cells(3).Value = "Playing"
-                'End If
-            Next
-
-
             ' currentPeriod = 1
             'txtPeriod.Text = currentPeriod
             checkin = 0
@@ -491,23 +498,25 @@ Public Class frmMain
             cmdEnd.Enabled = True
             cmdExchange.Enabled = False
 
-            filename2 = filename
+            'filename2 = filename
 
             'showInstructions = getINI(sfile, "gameSettings", "showInstructions")
+
 
             'signal clients to begin
             'every group contains 2 playors
             'playorlist 0,1 make a group , and 2,3 make a group and so on...
-            Group.MakeGroups(modMain.playerList, modMain.groupList, _
-                            modMain.allVocabulary, modMain.initScoreOfPlayor, _
-                            modMain.cooperateMatrix, modMain.competeMatrix, _
+            Group.MakeGroups(Game.playerList, Game.groupList, _
+                            Game.allVocabulary, Game.initScoreOfPlayor, _
+                            Game.cooperateMatrix, Game.competeMatrix, _
                             Me.wsk_Col)
-            For i As Integer = 0 To modMain.groupList.Length - 1
+
+            For i As Integer = 0 To Game.groupList.Length - 1
                 groupList(i).Begin()
             Next
 
             checkin = 0
-
+            RefreshPlayorDisplay()
         Catch ex As Exception
             appEventLog_Write("error cmdBegin_Click:", ex)
         End Try
