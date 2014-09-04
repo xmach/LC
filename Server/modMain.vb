@@ -7,10 +7,10 @@ Imports System.Windows.Forms
 Imports System.Drawing
 Imports LC
 
-Module modMain
+Module Game
 #Region " General Variables "
-    Public playerList() As LC.Playor                  'array of players
-    Public playerCount As Integer                    'number of players connected
+    Public playerList() As Playor                  'array of players
+    'Public playerCount As Integer                    'number of players connected
     Public numberOfPlayers As Integer                'number of desired players
     Public sfile As String                           'location of intialization file  
     Public checkin As Integer                        'global counter 
@@ -23,7 +23,7 @@ Module modMain
     Public showInstructions As Boolean               'show client instructions  
     'Public currentInstruction As Integer             'current page of instructions 
     'Public numberofGroups As Integer         'number of groups = number of playors / 2
-    Public groupList() As LC.Group 'each group contains 2 playors
+    Public groupList() As Group 'each group contains 2 playors
     Public ls As Decimal           'language similarity
     Public cooperateMatrix As LC.ScoreMatrix 'the score matrix for cooperate game
     Public competeMatrix As LC.ScoreMatrix 'the score matrix for compete game
@@ -34,17 +34,29 @@ Module modMain
 
     Public allSymbols As List(Of String)
     Public allVocabulary As List(Of Vocabulary)
-
+    Private playorIDSeed As Integer = 1
+    Private syncObj As Object = String.Empty
+    Private currentRound As Integer
 #End Region
 
-    'global variables here
-    'Public numberOfPeriods As Integer     'number of periods
-    'Public currentPeriod As Integer       'current period 
+    Public ReadOnly Property ReadyForNewRound() As Boolean
+        Get
+            Dim allGroupFinishedARound = True
+            For index As Integer = 0 To groupList.Length - 1
+                If Not TypeOf groupList(index).Status Is StatusPhase2DecisionMade Then
+                    allGroupFinishedARound = False
+                    Exit For
+                End If
+            Next
+            Return allGroupFinishedARound
+        End Get
+    End Property
 
-    'Public instructionX As Integer            'start up locations of windows
-    'Public instructionY As Integer
-    'Public windowX As Integer
-    'Public windowY As Integer
+    Public ReadOnly Property CurrentRoundNumber() As Integer
+        Get
+            Return currentRound
+        End Get
+    End Property
 
 #Region " General Functions "
     Public Sub main(ByVal args() As String)
@@ -71,156 +83,65 @@ Module modMain
     '        appEventLog_Write("error takeIP:", ex)
     '    End Try
     'End Sub
-
-    Public Function roundUp(ByVal value As Double) As Integer
-        Try
-            Dim msgtokens() As String
-
-            If InStr(CStr(value), ".") Then
-                msgtokens = CStr(value).Split(".")
-
-                roundUp = msgtokens(0)
-                roundUp += 1
-            Else
-                roundUp = value
-            End If
-        Catch ex As Exception
-            Return CInt(value)
-            appEventLog_Write("error roundUp:", ex)
-        End Try
+    Public Function GetNewPlayorId() As String
+        SyncLock syncObj
+            Dim newID As String = playorIDSeed.ToString()
+            playorIDSeed += 1
+            Return newID
+        End SyncLock
     End Function
 
-    'Public Function getMyColor(ByVal index As Integer) As Color
-    '    Try
-    '        'appEventLog_Write("get color")
-
-    '        Select Case index
-    '            Case 1
-    '                getMyColor = Color.Blue
-    '            Case 2
-    '                getMyColor = Color.Red
-    '            Case 3
-    '                getMyColor = Color.Teal
-    '            Case 4
-    '                getMyColor = Color.Green
-    '            Case 5
-    '                getMyColor = Color.Purple
-    '            Case 6
-    '                getMyColor = Color.Orange
-    '            Case 7
-    '                getMyColor = Color.Brown
-    '            Case 8
-    '                getMyColor = Color.Gray
-    '        End Select
-    '    Catch ex As Exception
-    '        appEventLog_Write("error getMyColor:", ex)
-    '    End Try
-    'End Function
-
-    'Public Function colorToId(ByVal str As String) As Integer
-    '    Try
-    '        Dim i As Integer
-
-    '        'appEventLog_Write("color to id :" & str)
-
-    '        For i = 1 To numberOfPlayers
-    '            If str = playerList(i).colorName Then
-    '                colorToId = i
-    '                Exit Function
-    '            End If
-    '        Next
-
-    '        colorToId = -1
-    '    Catch ex As Exception
-    '        Return 0
-    '        appEventLog_Write("error colorToId:", ex)
-    '    End Try
-    'End Function
+    
 #End Region
+    ''' <summary>
+    ''' scramble and reassign the vocabulary for new round 
+    ''' </summary>
+    Public Sub NextRound()
+        'TODO 
+        currentRound += 1
+        If currentRound > 1 Then
+            're assign the vocabulary 
+            'group(i) 's vocabulary assign to group(i-1) 
+            Dim tempVocalist As Tuple(Of Vocabulary, Vocabulary)()
+            tempVocalist = New Tuple(Of Vocabulary, Vocabulary)(groupList.Length - 1) {}
+            For index As Integer = 0 To groupList.Length - 1
+                Dim tempIdx As Integer = CInt(IIf(index - 1 < 0, groupList.Length - 1, index - 1))
+
+                tempVocalist(tempIdx) = New Tuple(Of Vocabulary, Vocabulary)(groupList(index).Playors(0).Vocabulary, groupList(index).Playors(1).Vocabulary)
+
+            Next
+            ScrambleVocabulary(tempVocalist)
+        End If
+        For index As Integer = 0 To groupList.Length - 1
+            groupList(index).Status = New StatusNewRound(groupList(index))
+            groupList(index).NewRound()
+        Next
+    End Sub
+
+    Private Sub ScrambleVocabulary(ByVal vocalist As Tuple(Of Vocabulary, Vocabulary)())
+        'TODO
+    End Sub
+
+    Public Sub RegisterPlayor(ByVal playerList As Playor(), ByVal ID As String, ByVal ClientIP As String)
+
+        For index As Integer = 0 To playerList.Length
+            If playerList(index) Is Nothing Then
+                playerList(index) = New Playor()
+                playerList(index).ID = ID
+                playerList(index).myIPAddress = ClientIP
+                Return
+            End If
+        Next
+    End Sub
+
 
     Public Sub takeMessage(ByVal msg As MessageBag)
-        'when a message is received from a client it is parsed here
-        'msgtokens(1) has type of message sent, having different types of messages allows you to send different formats for different actions.
-        'msgtokens(2) has the semicolon delimited data that is to be parsed and acted upon.  
-        'index has the client ID that sent the data.  Client ID is assigned by connection order, indexed from 1.
-
         Try
-            Dim playor As Playor = FindPlayorById(modMain.playerList, (msg.clientID))
+            Dim playor As Playor = FindPlayorById(Game.playerList, (msg.clientID))
             If (playor Is Nothing) Then Return
 
-            playor.ProcessMsg(msg)
-            'With frmServer
-            '    Dim msgtokens() As String
-            '    Dim outstr As String
+            playor.Group.ProcessMsg(msg, playor)
 
-            '    msgtokens = sinstr.Split("|")
-
-            '    Dim index As Integer
-            '    index = msgtokens(0)
-
-            '    Application.DoEvents()
-
-            '    Select Case msgtokens(1) 'case statement to handle each of the different types of messages
-            '        Case "01"
-            '            updateInstructionDisplay(msgtokens(2), index)
-            '        Case "02"
-            '            checkin += 1
-            '            .DataGridView1.Rows(index - 1).Cells(2).Value = "Waiting"
-
-            '            If checkin = numberOfPlayers Then
-            '                showInstructions = False
-            '                checkin = 0
-
-            '                MessageBox.Show("Begin Game.", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-            '                For i As Integer = 1 To numberOfPlayers
-            '                    'TODO playerList(i).finishedInstructions()
-            '                    .DataGridView1.Rows(i - 1).Cells(2).Value = "Playing"
-            '                Next i
-
-            '            End If
-            '        Case "03"
-            '            takeIP(msgtokens(2), index)
-            '        Case "04"
-
-            '        Case "05"
-
-            '        Case "06"
-
-            '        Case "07"
-            '            'TODO playerList(index).takeName(msgtokens(2))
-            '            checkin += 1
-            '            If checkin = numberOfPlayers Then
-            '                outstr = "Name,Earnings,"
-            '                summaryDf.WriteLine(outstr)
-            '                For i As Integer = 1 To numberOfPlayers
-
-            '                    outstr = .DataGridView1.Rows(i - 1).Cells(1).Value & ","
-            '                    outstr &= .DataGridView1.Rows(i - 1).Cells(3).Value & ","
-            '                    summaryDf.WriteLine(outstr)
-            '                Next
-
-            '                summaryDf.Close()
-            '            End If
-            '        Case "08"
-
-            '        Case "09"
-
-            '        Case "10"
-
-            '        Case "11"
-
-            '        Case "12"
-
-            '        Case "13"
-
-
-            '    End Select
-
-            '    Application.DoEvents()
-
-            'End With
-            'all subs/functions should have an error trap
         Catch ex As Exception
             'appEventLog_Write("error takeMessage: " & sinstr & " : ", ex)
             appEventLog_Write("error takeMessage: " & ex.ToString())
@@ -258,12 +179,12 @@ Module modMain
 
             '
             If playerList Is Nothing Then
-                playerList = New LC.Playor(numberOfPlayers - 1) {} 'kyle
+                playerList = New Playor(numberOfPlayers - 1) {} 'kyle
             Else
                 Array.Resize(playerList, numberOfPlayers)
             End If
             If groupList Is Nothing Then
-                groupList = New LC.Group(((numberOfPlayers) / 2) - 1) {}
+                groupList = New Group(((numberOfPlayers) / 2) - 1) {}
             Else
                 Array.Resize(groupList, (numberOfPlayers) / 2)
             End If
@@ -272,14 +193,14 @@ Module modMain
             If meaningStr = "?" Then
                 Throw New Exception("meanings not found in INI file")
             End If
-            modMain.meanings = meaningStr.TrimEnd(","c).Split(",")
+            Game.meanings = meaningStr.TrimEnd(","c).Split(",")
 
             'initial vocabulary
             Dim numberOfWordStr As String = getINI(sfile, "gameSettings", "ininumberofwords")
             If numberOfWordStr = "?" Then
                 Throw New Exception("ininumberofwords not found in INI file")
             End If
-            modMain.initialNumberofWords = Integer.Parse(numberOfWordStr)
+            Game.initialNumberofWords = Integer.Parse(numberOfWordStr)
 
             allSymbols = Vocabulary.ReadSymbolFromFile(Application.StartupPath + "\\symbols.txt")
             allVocabulary = Vocabulary.GenerateVocabulary(numberOfPlayers, allSymbols, ls, initialNumberofWords, meanings)
@@ -288,15 +209,16 @@ Module modMain
             Vocabulary.WriteToCsv(allVocabulary, File.Create(Application.StartupPath + "\\iniVocabulary.csv", 10000))
 
             'initial score matrix
-            modMain.cooperateMatrix = New ScoreMatrix()
-            cooperateMatrix.ReadFromFile(sfile, modMain.meanings, "cooperatematrix")
+            Game.cooperateMatrix = New ScoreMatrix()
+            cooperateMatrix.ReadFromFile(sfile, Game.meanings, "cooperatematrix")
 
-            modMain.competeMatrix = New LC.ScoreMatrix()
-            competeMatrix.ReadFromFile(sfile, modMain.meanings, "competematrix")
+            Game.competeMatrix = New LC.ScoreMatrix()
+            competeMatrix.ReadFromFile(sfile, Game.meanings, "competematrix")
             frmScoreMatrix.cooperateMatrix = cooperateMatrix
             frmScoreMatrix.competeMatrix = competeMatrix
 
             frmScoreMatrix.meanings = meanings
+            currentRound = 1
             'frmScoreMatrix.ShowDialog()
         Catch ex As Exception
             appEventLog_Write("error loadParameters:", ex)
