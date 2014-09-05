@@ -94,6 +94,12 @@
     <Compile Include="frmInstructions.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmLangChange.Designer.vb">
+      <DependentUpon>frmLangChange.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmLangChange.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,12 @@
       <DependentUpon>frmDecision.vb</DependentUpon>
     </Compile>
     <Compile Include="frmDecision.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmResult.Designer.vb">
+      <DependentUpon>frmResult.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmResult.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="modMain.vb" />
@@ -137,6 +149,9 @@
     <EmbeddedResource Include="frmInstructions.resx">
       <DependentUpon>frmInstructions.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmLangChange.resx">
+      <DependentUpon>frmLangChange.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
     </EmbeddedResource>
@@ -145,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmDecision.resx">
       <DependentUpon>frmDecision.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmResult.resx">
+      <DependentUpon>frmResult.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

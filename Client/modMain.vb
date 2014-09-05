@@ -64,7 +64,7 @@ Module modMain
         End Try
     End Sub
 
-   
+
 
 
     Private Sub wskClient_ErrorReceived(ByVal sender As System.Object, ByVal e As WinsockErrorEventArgs) Handles wskClient.ErrorReceived
@@ -112,7 +112,7 @@ Module modMain
 #Region " General Functions "
     Public Sub main()
         testDesionScreen()
-        
+
         ModuleEventLog.fileNamePrefix = "ClientLog"
         AppEventLog_Init()
         appEventLog_Write("Begin")

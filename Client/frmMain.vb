@@ -134,6 +134,6 @@ Public Class frmMain
         modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
     End Sub
 
-   
+
 
 End Class

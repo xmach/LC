@@ -82,6 +82,8 @@
     <Compile Include="frmSetup.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="game\Group.vb" />
+    <Compile Include="game\Playor.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -97,13 +99,21 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="modMain.vb" />
+    <Compile Include="Game.vb" />
     <Compile Include="frmScoreMatrix.Designer.vb">
       <DependentUpon>frmScoreMatrix.vb</DependentUpon>
     </Compile>
     <Compile Include="frmScoreMatrix.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="status\Game_StatusBase.vb" />
+    <Compile Include="status\Game_statusConnected.vb" />
+    <Compile Include="status\Game_statusNewRound.vb" />
+    <Compile Include="status\game_statusPhase2DecisionMade.vb" />
+    <Compile Include="status\Game_statusVocabularyUpdated.vb" />
+    <Compile Include="status\game_statuswaitingconnection.vb" />
+    <Compile Include="status\game_StatusWaitingPhase1Decision.vb" />
+    <Compile Include="status\Game_StatusWaitingPhase2Decision.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMain.resx">

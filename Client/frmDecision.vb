@@ -1,4 +1,4 @@
-Imports LC
+﻿Imports LC
 Imports System.Windows.Forms
 Public Class frmDecision
     Private m_ScoreMatrix As LC.ScoreMatrix

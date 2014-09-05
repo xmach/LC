@@ -23,10 +23,10 @@ Public Class StatusCommunicationDicision
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_feedbackPhase1Decision Then
             modMain.GameStatus = New StatusPhase2Decision
-            frmMain.ShowPhase2(m)
+            frmMain.DisplayPhase2Decision(m)
         ElseIf m.MsgType = LC.MsgType.Server_feedbackResult Then
             modMain.GameStatus = New StatusNewRound
-            frmMain.showResult(m)
+            frmMain.DisplayResult(m)
         End If
     End Sub
 End Class
@@ -60,7 +60,7 @@ Public Class StatusNewRound
 
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_languageDecision Then
-            Me.MainForm.DisplayLanguageDecision(m)
+            frmMain.DisplayLanguageDecision(m)
             modMain.GameStatus = New StatusLanguageDicision
         End If
     End Sub
