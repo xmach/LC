@@ -9,7 +9,7 @@ Public Class frmLangChange
 
     Public ReadOnly Property LearnNum() As Integer
         Get
-            Return Me.numLearn.Value
+            Return Convert.ToInt16(Me.numLearn.Value)
         End Get
     End Property
 
@@ -58,7 +58,7 @@ Public Class frmLangChange
         End Set
     End Property
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        If Not validateInput() Then Return
+        If Not ValidateInput() Then Return
 
         Me.Close()
     End Sub
@@ -67,7 +67,7 @@ Public Class frmLangChange
         binddata()
     End Sub
 
-    Private Function validateInput() As Boolean
+    Private Function ValidateInput() As Boolean
         If Me.numInvent.Value >= 1 Then
             If String.IsNullOrEmpty(Me.txtNewWord1.Text) OrElse Me.cboMeaning1.SelectedItem Is Nothing Then
                 MessageBox.Show("Please input for new word 1")
@@ -86,7 +86,7 @@ Public Class frmLangChange
                 Return False
             End If
         End If
-        If Me.txtNewWord1.Text = Me.txtNewWord2.Text OrElse _
+        If (Me.txtNewWord1.Text = Me.txtNewWord2.Text AndAlso Not String.IsNullOrEmpty(txtNewWord2.Text)) OrElse _
            (Me.txtNewWord1.Text = Me.txtNewWord3.Text AndAlso Not String.IsNullOrEmpty(txtNewWord3.Text)) OrElse _
             (Me.txtNewWord2.Text = Me.txtNewWord3.Text AndAlso Not String.IsNullOrEmpty(txtNewWord2.Text) AndAlso Not String.IsNullOrEmpty(txtNewWord3.Text)) Then
             MessageBox.Show("The new words should be unique ,please re-input")
@@ -95,7 +95,7 @@ Public Class frmLangChange
         Return True
     End Function
 
-    Private Sub binddata()
+    Private Sub BindData()
         Me.lstComm.View = View.LargeIcon
         Me.lstPrivate.View = View.LargeIcon
         Me.lstComm.GridLines = True
@@ -106,7 +106,7 @@ Public Class frmLangChange
 
         BindMeaning(Me.lstComm, Me.Meaning)
         BindMeaning(Me.lstPrivate, Me.Meaning)
-        bingSymbol(Me.lstComm, Me.lstPrivate, Me.Vocabulary)
+        BindSymbol(Me.lstComm, Me.lstPrivate, Me.Vocabulary)
         Me.lstComm.ShowGroups = True
         Me.lstPrivate.ShowGroups = True
 
@@ -145,15 +145,15 @@ Public Class frmLangChange
 
     End Sub
 
-    Private Sub bingSymbol(ByVal lvCommon As ListView, ByVal lvPrivate As ListView, ByVal voca As Vocabulary)
+    Private Sub BindSymbol(ByVal lvCommon As ListView, ByVal lvPrivate As ListView, ByVal voca As Vocabulary)
 
         For index As Integer = 0 To lvCommon.Groups.Count - 1
             Dim grp As ListViewGroup = lvCommon.Groups(index)
-            Dim symbols As IList(Of String) = voca.GetCommonList(grp.Name)
-            If symbols Is Nothing Then
+            Dim symbollist As ICollection(Of String) = voca.GetCommonList(grp.Name)
+            If symbollist Is Nothing Then
                 Continue For
             End If
-            For Each sym As String In symbols
+            For Each sym As String In symbollist
                 Dim item As New ListViewItem(sym, 0, grp)
                 'item.Group = grp
                 'grp.Items.Add(item)
@@ -162,11 +162,11 @@ Public Class frmLangChange
         Next
         For index As Integer = 0 To lvPrivate.Groups.Count - 1
             Dim grp As ListViewGroup = lvPrivate.Groups(index)
-            Dim symbols As IList(Of String) = voca.GetPrivateList(grp.Name)
-            If symbols Is Nothing Then
+            Dim symbollist As ICollection(Of String) = voca.GetPrivateList(grp.Name)
+            If symbollist Is Nothing Then
                 Continue For
             End If
-            For Each sym As String In symbols
+            For Each sym As String In symbollist
                 Dim item As New ListViewItem(sym, 0, grp)
                 'item.Group = grp
                 'grp.Items.Add(item)

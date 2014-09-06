@@ -129,11 +129,13 @@ Public Class Playor
         End Try
     End Sub
 
-    Public Sub SendVocabularyToClient(ByVal wsk_Col As WinsockCollection, ByVal voca As LC.Vocabulary)
+    Public Sub SendVocabularyToClient(ByVal wsk_Col As WinsockCollection, ByVal voca As LC.Vocabulary, ByVal meanings As String())
         Try
             Dim message As New LC.MessageBag
             message.MsgType = MsgType.Server_languageDecision
             message.Vocabulary = voca
+            message.meanings = meanings
+
             Dim msgStr As String = LC.XmlHelper.XmlSerialize(message, Encoding.UTF8)
 
             wsk_Col.Send(Me.ID, msgStr)
@@ -159,6 +161,7 @@ Public Class Playor
         Try
             Dim message As New LC.MessageBag
             message.MsgType = MsgType.Server_readInstruction
+            message.Score = Me.Score
             Dim msgStr As String = LC.XmlHelper.XmlSerialize(message, Encoding.UTF8)
             wsk_Col.Send(Me.ID, msgStr)
 

@@ -34,8 +34,9 @@ Public Module ModuleEventLog
             eventLog = File.CreateText(filename)
 
             int = "int"
+            eventLog.AutoFlush = True
         Catch ex As Exception
-
+            Throw
         End Try
     End Sub
 
@@ -44,8 +45,9 @@ Public Module ModuleEventLog
             If int = Nothing Then AppEventLog_Init()
 
             eventLog.WriteLine(text & " (" & Now & ")")
-        Catch ex As Exception
 
+        Catch ex As Exception
+            Throw
         End Try
     End Sub
 

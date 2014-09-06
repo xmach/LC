@@ -44,7 +44,7 @@ Module modMain
             Dim buf As String = Nothing
             CType(sender, Winsock).Get(buf)
 
-            Dim msgtokens() As String = buf.Split("#")
+            Dim msgtokens() As String = buf.Split("#"c)
             Dim i As Integer
 
             appEventLog_Write("data arrival: " & buf)
@@ -76,7 +76,7 @@ Module modMain
             'appEventLog_Write("state changed")
 
             If e.New_State = WinsockStates.Closed Then
-                frmConnect.Show()
+                mainForm.Reconnect()
             End If
         Catch ex As Exception
             appEventLog_Write("error wskClient_StateChanged:", ex)
@@ -93,9 +93,9 @@ Module modMain
             wskClient.LocalPort = 8080
             wskClient.MaxPendingConnections = 1
             wskClient.Protocol = WinsockProtocols.Tcp
-            wskClient.RemotePort = serverPortNumber
+            wskClient.RemotePort = Convert.ToInt32(serverPortNumber)
             wskClient.RemoteServer = serverIPAddress
-            wskClient.SynchronizingObject = frmMain
+            wskClient.SynchronizingObject = mainForm ' frmMain
 
             wskClient.Connect()
             GameStatus = New StatusConnected()
@@ -111,7 +111,7 @@ Module modMain
 
 #Region " General Functions "
     Public Sub main()
-        testDesionScreen()
+        'testDesionScreen()
 
         ModuleEventLog.fileNamePrefix = "ClientLog"
         AppEventLog_Init()
@@ -157,9 +157,9 @@ Module modMain
 
             Dim msgtokens() As String
 
-            msgtokens = sinstr.Split(";")
+            msgtokens = sinstr.Split(";"c)
 
-            inumber = msgtokens(0)
+            inumber = Convert.ToInt32(msgtokens(0))
 
             appEventLog_Write("Client# = " & inumber)
 

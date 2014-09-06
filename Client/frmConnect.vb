@@ -2,6 +2,18 @@ Imports System.Windows.Forms
 Imports LC
 Public Class frmConnect
 
+    Public ReadOnly Property ServerIP As String
+        Get
+            Return Me.txtIP.Text
+        End Get
+    End Property
+
+    Public ReadOnly Property serverPortNumber As String
+        Get
+            Return Me.txtPort.Text
+        End Get
+    End Property
+
     Private Sub frmConnect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             'load in last ip/port
@@ -15,14 +27,15 @@ Public Class frmConnect
     Private Sub cmdConnect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdConnect.Click
         Try
             'try to connect to server
-            Me.Hide()
-            serverIPAddress = Me.txtIP.Text
-            serverPortNumber = txtPort.Text
-            connect()
-            frmMain.Show()
-            modMain.GameStatus = New StatusConnected
-            writeINI(sfile, "Settings", "ip", serverIPAddress)
-            writeINI(sfile, "Settings", "port", txtPort.Text)
+            'Me.Hide()
+            'serverIPAddress = Me.txtIP.Text
+            'serverPortNumber = txtPort.Text
+            'connect()
+            'frmMain.Show()
+            'modMain.GameStatus = New StatusConnected
+            'writeINI(sfile, "Settings", "ip", serverIPAddress)
+            'writeINI(sfile, "Settings", "port", txtPort.Text)
+            Me.Close()
         Catch ex As Exception
             appEventLog_Write("error cmdConnect_Click:", ex)
             modMain.GameStatus = New StatusNotConnected

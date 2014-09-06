@@ -54,6 +54,7 @@ Public Class frmDecision
 
     Private Sub frmPhase2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.pnlPhase2.Visible = IsPhase2
+        Me.Text = CStr(IIf(IsPhase2, "Please reconfirm your choice", "Please choose"))
         Binddata()
     End Sub
 
@@ -65,9 +66,9 @@ Public Class frmDecision
             Return
         End If
         If Me.IsPhase2 Then
-            Me.Phase2Decision = Me.cboMeanings.SelectedText
+            Me.Phase2Decision = Me.cboMeanings.SelectedItem.ToString()
         Else
-            Me.Phase1Decision = Me.cboMeanings.SelectedText
+            Me.Phase1Decision = Me.cboMeanings.SelectedItem.ToString()
         End If
         Me.Close()
     End Sub

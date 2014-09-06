@@ -1,10 +1,10 @@
 Public Class WinsockCollection
     Inherits CollectionBase
-    Private col As New Collection
+    Private col As New List(Of String)
 
-    Public Sub Add(ByVal value As Winsock)
-        Add(value, "")
-    End Sub
+    'Public Sub Add(ByVal value As Winsock)
+    '    Add(value, "")
+    'End Sub
     Public Sub Add(ByVal value As Winsock, ByVal Key As String)
         Try
             AddHandler value.Connected, AddressOf Wsk_Connected
@@ -19,7 +19,7 @@ Public Class WinsockCollection
             List.Add(value)
             col.Add(Key)
         Catch ex As Exception
-            MsgBox("Add")
+            Throw
         End Try
     End Sub
     Public Shadows Sub Clear()
@@ -60,22 +60,22 @@ Public Class WinsockCollection
             appEventLog_Write("error send message:", ex)
         End Try
     End Sub
-    Public Sub Send(ByVal header As String, ByVal key As String, ByVal value As String)
-        Try
-            Dim outstr As String
-            outstr = header & "|" & value & "|" & "#"
+    'Public Sub Send(ByVal header As String, ByVal key As String, ByVal value As String)
+    '    Try
+    '        Dim outstr As String
+    '        outstr = header & "|" & value & "|" & "#"
 
-            Item(key).Send(outstr)
-        Catch ex As Exception
-            appEventLog_Write("error send message:", ex)
-        End Try
-    End Sub
-    Public Sub Send(ByVal header As String, ByVal index As Integer, ByVal value As String)
-        Dim outstr As String
-        outstr = header & "|" & value & "|" & "#"
+    '        Item(key).Send(outstr)
+    '    Catch ex As Exception
+    '        appEventLog_Write("error send message:", ex)
+    '    End Try
+    'End Sub
+    'Public Sub Send(ByVal header As String, ByVal index As Integer, ByVal value As String)
+    '    Dim outstr As String
+    '    outstr = header & "|" & value & "|" & "#"
 
-        Item(index).Send(outstr)
-    End Sub
+    '    Item(index).Send(outstr)
+    'End Sub
     Public Sub SendAll(ByVal value As String)
         For Each wsk As Winsock In List
             If wsk.State = WinsockStates.Connected Then
@@ -85,7 +85,7 @@ Public Class WinsockCollection
     End Sub
     Public Sub SendAllBut(ByVal key As String, ByVal value As String)
         If col.Count < 1 Then Exit Sub
-        For i As Integer = 1 To col.Count
+        For i As Integer = 0 To col.Count - 1
             Dim cKey As String = col.Item(i)
             If cKey <> key Then
                 If Item(cKey).State = WinsockStates.Connected Then
@@ -111,7 +111,9 @@ Public Class WinsockCollection
         Return List.IndexOf(value)
     End Function
     Public Function GetKey(ByVal value As Winsock) As String
-        Return col.Item(IndexOf(value) + 1)
+        Dim idx As Integer = IndexOf(value)
+        If idx < 0 Then Return Nothing
+        Return col(idx)
     End Function
     Public Sub Remove(ByVal value As Winsock)
         Try
@@ -159,7 +161,7 @@ Public Class WinsockCollection
                 RemoveHandler Item(index).SendProgress, AddressOf Wsk_SendProgress
                 RemoveHandler Item(index).StateChanged, AddressOf Wsk_StateChanged
                 List.RemoveAt(index)
-                col.Remove(index + 1)
+                col.Remove(index)
             End If
         Catch ex As Exception
             MsgBox("Winsock/RemoveIndex")
@@ -182,13 +184,13 @@ Public Class WinsockCollection
         Get
             Try
                 Dim idx As Integer = -1
-                For i As Integer = 1 To col.Count
+                For i As Integer = 0 To col.Count - 1
                     If col.Item(i) = Key Then
                         idx = i
                     End If
                 Next
                 If idx = -1 Then Return New Winsock
-                Return CType(List.Item(idx - 1), Winsock)
+                Return CType(List.Item(idx), Winsock)
             Catch ex As Exception
                 MsgBox("Key/Item")
                 Return New Winsock

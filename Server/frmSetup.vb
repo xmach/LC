@@ -5,7 +5,7 @@ Public Class frmSetup
         Try
             'load paremeters into text boxes from server.ini
             txtPlayers.Text = getINI(sfile, "gameSettings", "numberOfPlayers")
-            chkShowInstructions.Checked = getINI(sfile, "gameSettings", "showInstructions")
+            chkShowInstructions.Checked = Boolean.Parse(getINI(sfile, "gameSettings", "showInstructions"))
             txtPort.Text = getINI(sfile, "gameSettings", "port")
             txtRounds.Text = getINI(sfile, "gameSettings", "numberOfPeriods")
 
@@ -23,7 +23,7 @@ Public Class frmSetup
         Try
             'write parameter from text boxes into server.ini
             writeINI(sfile, "gameSettings", "numberOfPlayers", txtPlayers.Text)
-            writeINI(sfile, "gameSettings", "showInstructions", chkShowInstructions.Checked)
+            writeINI(sfile, "gameSettings", "showInstructions", chkShowInstructions.Checked.ToString())
             writeINI(sfile, "gameSettings", "port", txtPort.Text)
             writeINI(sfile, "gameSettings", "numberOfPeriods", txtRounds.Text)
 

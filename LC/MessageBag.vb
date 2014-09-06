@@ -33,4 +33,6 @@ Public Class MessageBag
     Public invent As Tuple(Of String, String)()
     <XmlElement()> _
     Public symbols As String()
+    <XmlElement()> _
+    Public meanings As String()
 End Class

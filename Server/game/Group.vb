@@ -164,7 +164,7 @@ Public Class Group
 
     Public Sub SendVocabulary()
         For index As Integer = 0 To Me.Playors.Length - 1
-            Me.Playors(index).SendVocabularyToClient(Me.m_winsock_collection, Me.Playors(index).Vocabulary)
+            Me.Playors(index).SendVocabularyToClient(Me.m_winsock_collection, Me.Playors(index).Vocabulary, Game.meanings)
         Next
     End Sub
 
@@ -190,18 +190,21 @@ Public Class Group
             Dim msg As LC.MessageBag = FindMsgByType(Me.m_msgFromAllPlayors(index), MsgType.Client_sendLearnInvent)
             Dim cost As Integer = 0
             cost += msg.learn
-            cost += 0.5 * msg.invent.Length * (msg.invent.Length + 1)
-            m_playors(index).Cost -= cost
+            If Not msg.invent Is Nothing Then
+                cost += Convert.ToInt32(0.5 * msg.invent.Length * (msg.invent.Length + 1))
+            End If
+            m_playors(index).Cost = cost
 
             'for learn : move another playor's private list to common list
             Dim learnedWords As List(Of Tuple(Of String, String)) = Playors(1 - index).Vocabulary.Learn(msg.learn)
             'Playors(index).Vocabulary.m_commlist = newCommonlist
             newCommonWords.AddRange(learnedWords)
-
-            'for invent
-            For priSymIndex As Integer = 0 To msg.invent.Length - 1
-                Playors(index).Vocabulary.AddPrivateList(msg.invent(priSymIndex).Item1, msg.invent(priSymIndex).Item2)
-            Next
+            If Not msg.invent Is Nothing Then
+                'for invent
+                For priSymIndex As Integer = 0 To msg.invent.Length - 1
+                    Playors(index).Vocabulary.AddPrivateList(msg.invent(priSymIndex).Item1, msg.invent(priSymIndex).Item2)
+                Next
+            End If
         Next
         'refresh both playors' common list
         For index As Integer = 0 To Me.Playors.Length - 1
@@ -211,7 +214,7 @@ Public Class Group
         Next
     End Sub
 
-    Private Function FindMsgByType(ByVal list As IList(Of LC.MessageBag), ByVal mtype As MsgType)
+    Private Function FindMsgByType(ByVal list As IList(Of LC.MessageBag), ByVal mtype As MsgType) As MessageBag
 
         For index As Integer = 0 To list.Count - 1
             If list(index).MsgType = mtype Then

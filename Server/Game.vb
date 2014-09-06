@@ -165,10 +165,10 @@ Module Game
         Try
             'load parameters from server.ini
 
-            numberOfPlayers = getINI(sfile, "gameSettings", "numberOfPlayers")
-            numberOfRound = getINI(sfile, "gameSettings", "numberOfRound")
-            initScoreOfPlayor = getINI(sfile, "gameSettings", "iniScore")
-            portNumber = getINI(sfile, "gameSettings", "port")
+            numberOfPlayers = Convert.ToInt32(getINI(sfile, "gameSettings", "numberOfPlayers"))
+            numberOfRound = Convert.ToInt32(getINI(sfile, "gameSettings", "numberOfRound"))
+            initScoreOfPlayor = Convert.ToInt32(getINI(sfile, "gameSettings", "iniScore"))
+            portNumber = Convert.ToInt32(getINI(sfile, "gameSettings", "port"))
             Dim lsStr As String = getINI(sfile, "gameSettings", "ls")
             If (lsStr <> "?") Then
                 ls = Decimal.Parse(lsStr)
@@ -184,16 +184,16 @@ Module Game
                 Array.Resize(playerList, numberOfPlayers)
             End If
             If groupList Is Nothing Then
-                groupList = New Group(((numberOfPlayers) / 2) - 1) {}
+                groupList = New Group(Convert.ToInt32((numberOfPlayers) / 2) - 1) {}
             Else
-                Array.Resize(groupList, (numberOfPlayers) / 2)
+                Array.Resize(groupList, Convert.ToInt32((numberOfPlayers) / 2))
             End If
             'read all meaning
             Dim meaningStr As String = getINI(sfile, "meanings", "all")
             If meaningStr = "?" Then
                 Throw New Exception("meanings not found in INI file")
             End If
-            Game.meanings = meaningStr.TrimEnd(","c).Split(",")
+            Game.meanings = meaningStr.TrimEnd(","c).Split(","c)
 
             'initial vocabulary
             Dim numberOfWordStr As String = getINI(sfile, "gameSettings", "ininumberofwords")
@@ -204,7 +204,7 @@ Module Game
 
             allSymbols = Vocabulary.ReadSymbolFromFile(Application.StartupPath + "\\symbols.txt")
             allVocabulary = Vocabulary.GenerateVocabulary(numberOfPlayers, allSymbols, ls, initialNumberofWords, meanings)
-
+            
             'output the initial vobalary
             Vocabulary.WriteToCsv(allVocabulary, File.Create(Application.StartupPath + "\\iniVocabulary.csv", 10000))
 
@@ -236,19 +236,19 @@ Module Game
         End Try
     End Sub
 
-    Public Sub updateInstructionDisplay(ByVal sinstr As String, ByVal index As Integer)
-        Try
-            With frmServer
-                Dim msgtokens() As String = sinstr.Split(";")
-                Dim nextToken As Integer = 0
+    'Public Sub updateInstructionDisplay(ByVal sinstr As String, ByVal index As Integer)
+    '    Try
+    '        With frmServer
+    '            Dim msgtokens() As String = sinstr.Split(";"c)
+    '            Dim nextToken As Integer = 0
 
-                .DataGridView1.Rows(index - 1).Cells(2).Value = "Page " & msgtokens(nextToken)
-                nextToken += 1
-            End With
-        Catch ex As Exception
-            appEventLog_Write("error :", ex)
-        End Try
-    End Sub
+    '            .DataGridView1.Rows(index - 1).Cells(2).Value = "Page " & msgtokens(nextToken)
+    '            nextToken += 1
+    '        End With
+    '    Catch ex As Exception
+    '        appEventLog_Write("error :", ex)
+    '    End Try
+    'End Sub
 
 
 End Module

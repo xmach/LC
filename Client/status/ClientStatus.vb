@@ -2,15 +2,15 @@ Imports LC
 Public MustInherit Class ClientStatusBase
     Public MustOverride Sub ReceiveMsg(ByVal m As LC.MessageBag)
 
-    Protected m_form As frmMain
-    Friend Property MainForm() As frmMain
-        Get
-            Return Me.m_form
-        End Get
-        Set(ByVal value As frmMain)
-            Me.m_form = value
-        End Set
-    End Property
+    'Protected m_form As frmMain
+    'Friend Property MainForm() As frmMain
+    '    Get
+    '        Return Me.m_form
+    '    End Get
+    '    Set(ByVal value As frmMain)
+    '        Me.m_form = value
+    '    End Set
+    'End Property
 
     'Protected m_game As modMain
 
@@ -38,7 +38,7 @@ Public Class StatusConnected
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_readInstruction Then
             modMain.GameStatus = New StatusReadInstruction
-            frmMain.DisplayInstructions()
+            frmMain.DisplayInstructions(m)
         End If
     End Sub
 End Class
@@ -49,7 +49,7 @@ Public Class StatusLanguageDicision
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_feedbackScoreMatrix Then
             modMain.GameStatus = New StatusCommunicationDicision
-
+            frmMain.DisplayPhase1Decision(m)
         End If
     End Sub
 End Class
@@ -91,7 +91,7 @@ Public Class StatusReadInstruction
 
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_languageDecision Then
-            Me.MainForm.DisplayLanguageDecision(m)
+            frmMain.DisplayLanguageDecision(m)
             modMain.GameStatus = New StatusLanguageDicision
         End If
     End Sub

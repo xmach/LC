@@ -81,11 +81,11 @@ Public Class frmMain
 
     Private Sub Wsk_DataArrival(ByVal sender As Object, ByVal e As WinsockDataArrivalEventArgs) Handles wsk_Col.DataArrival
         Try
-            Dim sender_key As String = wsk_Col.GetKey(sender)
+            Dim sender_key As String = wsk_Col.GetKey(CType(sender, Winsock))
             Dim buf As String = Nothing
             CType(sender, Winsock).Get(buf)
 
-            Dim msgtokens() As String = buf.Split("#")
+            Dim msgtokens() As String = buf.Split("#"c)
             Dim i As Integer
 
             'appEventLog_Write("data arrival: " & buf)
@@ -103,8 +103,9 @@ Public Class frmMain
 
     Private Sub Wsk_Disconnected(ByVal sender As Object, ByVal e As System.EventArgs) Handles wsk_Col.Disconnected
         Try
-            wsk_Col.Remove(sender)
-            Dim sender_key As String = wsk_Col.GetKey(sender)
+            Dim sender_key As String = wsk_Col.GetKey(CType(sender, Winsock))
+            wsk_Col.Remove(CType(sender, Winsock))
+
             Dim playorDisconnect As Playor = FindPlayorById(Game.playerList, (sender_key))
             Dim idx As Integer = Array.IndexOf(Game.playerList, playorDisconnect)
             If (idx > -1) Then Game.playerList(idx) = Nothing
@@ -150,38 +151,38 @@ Public Class frmMain
     '    End Try
     'End Function
 
-    Private Sub PrintDocument1_PrintPage(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) Handles PrintDocument1.PrintPage
-        Try
-            Dim i As Integer
-            Dim f As New Font("Arial", 8, FontStyle.Bold)
-            Dim tempN As Integer
+    'Private Sub PrintDocument1_PrintPage(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) Handles PrintDocument1.PrintPage
+    '    Try
+    '        Dim i As Integer
+    '        Dim f As New Font("Arial", 8, FontStyle.Bold)
+    '        Dim tempN As Integer
 
-            e.Graphics.DrawString(filename2, f, Brushes.Black, 10, 10)
+    '        e.Graphics.DrawString(filename2, f, Brushes.Black, 10, 10)
 
-            f = New Font("Arial", 15, FontStyle.Bold)
+    '        f = New Font("Arial", 15, FontStyle.Bold)
 
-            e.Graphics.DrawString("Name", f, Brushes.Black, 10, 30)
-            e.Graphics.DrawString("Earnings", f, Brushes.Black, 400, 30)
+    '        e.Graphics.DrawString("Name", f, Brushes.Black, 10, 30)
+    '        e.Graphics.DrawString("Earnings", f, Brushes.Black, 400, 30)
 
-            f = New Font("Arial", 12, FontStyle.Bold)
+    '        f = New Font("Arial", 12, FontStyle.Bold)
 
-            tempN = 55
+    '        tempN = 55
 
-            For i = 1 To DataGridView1.RowCount
-                If i Mod 2 = 0 Then
-                    e.Graphics.FillRectangle(Brushes.Aqua, 0, tempN, 500, 19)
-                End If
-                e.Graphics.DrawString(DataGridView1.Rows(i - 1).Cells(1).Value, f, Brushes.Black, 10, tempN)
-                e.Graphics.DrawString(DataGridView1.Rows(i - 1).Cells(3).Value, f, Brushes.Black, 400, tempN)
+    '        For i = 1 To DataGridView1.RowCount
+    '            If i Mod 2 = 0 Then
+    '                e.Graphics.FillRectangle(Brushes.Aqua, 0, tempN, 500, 19)
+    '            End If
+    '            e.Graphics.DrawString(DataGridView1.Rows(i - 1).Cells(1).Value, f, Brushes.Black, 10, tempN)
+    '            e.Graphics.DrawString(DataGridView1.Rows(i - 1).Cells(3).Value, f, Brushes.Black, 400, tempN)
 
-                tempN += 20
-            Next
+    '            tempN += 20
+    '        Next
 
-        Catch ex As Exception
-            appEventLog_Write("error PrintDocument1_PrintPage:", ex)
-        End Try
+    '    Catch ex As Exception
+    '        appEventLog_Write("error PrintDocument1_PrintPage:", ex)
+    '    End Try
 
-    End Sub
+    'End Sub
 #End Region
 
     Public tempTime As String 'time stamp at start of experiment
@@ -264,7 +265,7 @@ Public Class frmMain
             cmdSetup2.Enabled = True
             cmdExchange.Enabled = True
 
-            lblConnections.Text = 0
+            lblConnections.Text = 0.ToString()
             ' playerCount = 0
 
             DataGridView1.RowCount = 0

@@ -3,7 +3,17 @@ Imports LC
 Imports System.Text
 
 Public Class frmMain
-    'Private m_frmInstructions As frmInstructions = New frmInstructions()
+    Private m_Score As Integer
+
+    Public Property MScore As Integer
+        Get
+            Return m_Score
+        End Get
+        Set(ByVal value As Integer)
+            m_Score = value
+        End Set
+    End Property
+
 
     Private Sub frmMain_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         Try
@@ -75,13 +85,22 @@ Public Class frmMain
         End Try
     End Sub
 
-
+    Public Sub Reconnect()
+        Dim f As New frmConnect()
+        f.ShowDialog()
+        Dim ip As String = f.ServerIP
+        Dim port As String = f.serverPortNumber
+        modMain.serverIPAddress = ip
+        modMain.serverPortNumber = port
+        modMain.connect()
+    End Sub
 
     Public Sub DisplayLanguageDecision(ByVal m As LC.MessageBag)
         'TODO 
         'MessageBox.Show("DisplayLanguageDecision")
         Dim f As New frmLangChange()
-        f.Meaning = modMain.m_meanings
+        modMain.m_meanings = m.meanings
+        f.Meaning = m.meanings
         f.Vocabulary = m.Vocabulary
         f.Symbols = m.symbols
 
@@ -106,6 +125,7 @@ Public Class frmMain
         Dim f As New frmDecision
         f.IsPhase2 = False
         f.ScoreMatrix = m.scoreMatrix
+        f.Meanings = modMain.m_meanings
         f.ShowDialog()
         Dim message As New LC.MessageBag()
         message.MsgType = MsgType.Client_sendPhase1Decision
@@ -118,6 +138,7 @@ Public Class frmMain
         f.IsPhase2 = True
         f.Phase1Decision = m.Phase1Decision
         f.ScoreMatrix = m.scoreMatrix
+        f.Meanings = modMain.m_meanings
         f.ShowDialog()
         Dim message As New LC.MessageBag()
         message.MsgType = MsgType.Client_sendPhase2Decision
@@ -125,7 +146,8 @@ Public Class frmMain
         modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
     End Sub
 
-    Public Sub DisplayInstructions()
+    Public Sub DisplayInstructions(ByVal m As MessageBag)
+        Me.MScore = m.Score
         Dim f As New frmInstructions()
         f.ShowDialog()
         'send 
