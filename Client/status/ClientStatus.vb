@@ -38,6 +38,7 @@ Public Class StatusConnected
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_readInstruction Then
             modMain.GameStatus = New StatusReadInstruction
+            
             frmMain.DisplayInstructions(m)
         End If
     End Sub
@@ -49,7 +50,9 @@ Public Class StatusLanguageDicision
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_feedbackScoreMatrix Then
             modMain.GameStatus = New StatusCommunicationDicision
+            
             frmMain.DisplayPhase1Decision(m)
+
         End If
     End Sub
 End Class
@@ -81,6 +84,7 @@ Public Class StatusPhase2Decision
     Public Overrides Sub ReceiveMsg(ByVal m As LC.MessageBag)
         If m.MsgType = LC.MsgType.Server_feedbackResult Then
             modMain.GameStatus = New StatusReadInstruction
+            frmMain.DisplayResult(m)
         End If
     End Sub
 End Class

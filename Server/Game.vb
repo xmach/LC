@@ -37,6 +37,7 @@ Module Game
     Private playorIDSeed As Integer = 1
     Private syncObj As Object = String.Empty
     Private currentRound As Integer
+    Private currGameType As GameType
 #End Region
 
     Public ReadOnly Property ReadyForNewRound() As Boolean
@@ -57,6 +58,17 @@ Module Game
             Return currentRound
         End Get
     End Property
+
+    Public ReadOnly Property CurrentMatrix() As ScoreMatrix
+        Get
+            If currGameType = GameType.Cooperate Then
+                Return Game.cooperateMatrix
+            Else
+                Return Game.competeMatrix
+            End If
+        End Get
+    End Property
+
 
 #Region " General Functions "
     Public Sub main(ByVal args() As String)
@@ -98,6 +110,8 @@ Module Game
     ''' </summary>
     Public Sub NextRound()
         'TODO 
+        'backup message
+        Game.BackupMessage()
         currentRound += 1
         If currentRound > 1 Then
             're assign the vocabulary 
@@ -189,7 +203,7 @@ Module Game
                 Array.Resize(groupList, Convert.ToInt32((numberOfPlayers) / 2))
             End If
             'read all meaning
-            Dim meaningStr As String = getINI(sfile, "meanings", "all")
+            Dim meaningStr As String = getINI(sfile, "gameSettings", "meanings")
             If meaningStr = "?" Then
                 Throw New Exception("meanings not found in INI file")
             End If
@@ -219,7 +233,13 @@ Module Game
 
             frmScoreMatrix.meanings = meanings
             currentRound = 1
-            'frmScoreMatrix.ShowDialog()
+
+            Dim gametypeStr As String = getINI(sfile, "gameSettings", "gametype")
+            If GameType.Cooperate.ToString() = gametypeStr Then
+                Game.currGameType = GameType.Cooperate
+            Else
+                Game.currGameType = GameType.Compete
+            End If
         Catch ex As Exception
             appEventLog_Write("error loadParameters:", ex)
         End Try
@@ -249,6 +269,19 @@ Module Game
     '        appEventLog_Write("error :", ex)
     '    End Try
     'End Sub
+
+    Private Sub BackupMessage()
+        'TODO Throw New NotImplementedException
+        For Each g As Group In Game.groupList
+            For index As Integer = 0 To g.MsgFromAllPlayors.Length - 1
+                Dim msgs As LC.MessageBag() = g.MsgFromAllPlayors(index).ToArray()
+                g.MsgFromAllPlayors(index).Clear()
+                'Write To Message File
+                ' LC.ModuleEventLog.WriteLCMessage(msgs)
+            Next
+        Next
+    End Sub
+
 
 
 End Module

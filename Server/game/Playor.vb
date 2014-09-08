@@ -129,13 +129,13 @@ Public Class Playor
         End Try
     End Sub
 
-    Public Sub SendVocabularyToClient(ByVal wsk_Col As WinsockCollection, ByVal voca As LC.Vocabulary, ByVal meanings As String())
+    Public Sub SendVocabularyToClient(ByVal wsk_Col As WinsockCollection, ByVal voca As LC.Vocabulary, ByVal meanings As String(), ByVal curRound As Integer)
         Try
             Dim message As New LC.MessageBag
             message.MsgType = MsgType.Server_languageDecision
             message.Vocabulary = voca
             message.meanings = meanings
-
+            message.Round = curRound
             Dim msgStr As String = LC.XmlHelper.XmlSerialize(message, Encoding.UTF8)
 
             wsk_Col.Send(Me.ID, msgStr)
@@ -162,6 +162,7 @@ Public Class Playor
             Dim message As New LC.MessageBag
             message.MsgType = MsgType.Server_readInstruction
             message.Score = Me.Score
+            message.Round = 1 'First round
             Dim msgStr As String = LC.XmlHelper.XmlSerialize(message, Encoding.UTF8)
             wsk_Col.Send(Me.ID, msgStr)
 
@@ -186,7 +187,7 @@ Public Class Playor
     Public Sub ShowResultOfARound(ByVal wsk_Col As WinsockCollection, ByVal Decisions As String(), ByVal scores As Integer)
         Try
             Dim message As New LC.MessageBag
-            message.MsgType = MsgType.Server_feedbackPhase1Decision
+            message.MsgType = MsgType.Server_feedbackResult
             message.Score = scores
             message.Decision = Decisions
             Dim msgStr As String = LC.XmlHelper.XmlSerialize(message, Encoding.UTF8)

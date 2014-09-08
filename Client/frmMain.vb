@@ -1,16 +1,27 @@
 Imports System.Windows.Forms
 Imports LC
 Imports System.Text
+Imports System.Collections.Specialized
 
 Public Class frmMain
-    Private m_Score As Integer
-
-    Public Property MScore As Integer
+    Private m_Score As Nullable(Of Integer)
+    Private m_round As Nullable(Of Integer)
+    Public Property MScore As Nullable(Of Integer)
         Get
             Return m_Score
         End Get
-        Set(ByVal value As Integer)
+        Set(ByVal value As Nullable(Of Integer))
             m_Score = value
+        End Set
+    End Property
+
+    Public Property MRound() As Nullable(Of Integer)
+
+        Get
+            Return Me.m_round
+        End Get
+        Set(ByVal value As Nullable(Of Integer))
+            Me.m_round = value
         End Set
     End Property
 
@@ -24,9 +35,9 @@ Public Class frmMain
                 If CInt(e.KeyValue) = CInt(Keys.K) Then
                     If MessageBox.Show("Close Program?", "Close", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then Exit Sub
                     modMain.closing = True
-                    Me.Close()
+                    Application.Exit()
                 ElseIf CInt(e.KeyValue) = CInt(Keys.Q) Then
-                    frmConnect.Show()
+                    frmConnect.ShowDialog()
                 End If
             End If
         Catch ex As Exception
@@ -51,6 +62,8 @@ Public Class frmMain
             serverIPAddress = getINI(sfile, "Settings", "ip")
             serverPortNumber = getINI(sfile, "Settings", "port")
             localPortNumber = getINI(sfile, "Settings", "localport")
+
+            RefreshDisplay()
             connect()
 
         Catch ex As Exception
@@ -58,7 +71,16 @@ Public Class frmMain
         End Try
 
     End Sub
-
+    Private Sub RefreshDisplay()
+        Me.lblCurrentRound.Text = String.Empty
+        If Me.m_round.HasValue Then
+            Me.lblCurrentRound.Text = Me.m_round.ToString()
+        End If
+        Me.lblScore.Text = String.Empty
+        If Me.MScore.HasValue Then
+            Me.lblScore.Text = Me.MScore.ToString()
+        End If
+    End Sub
     'Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
     '    Try
 
@@ -113,6 +135,12 @@ Public Class frmMain
     End Sub
 
     Public Sub DisplayResult(ByVal m As MessageBag)
+        If m.Round.HasValue Then
+            Me.MRound = m.Round.Value
+        End If
+        If m.Score.HasValue Then
+            Me.MScore = m.Score.Value
+        End If
         Dim f As New frmResult()
         f.DisplayMsg = "Your score is:" & m.Score.ToString()
         f.ShowDialog()
@@ -120,7 +148,11 @@ Public Class frmMain
         message.MsgType = MsgType.Client_newRound
         modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
     End Sub
-
+    ''' <summary>
+    ''' phase 1 decision
+    ''' </summary>
+    ''' <param name="m"></param>
+    ''' <remarks></remarks>
     Public Sub DisplayPhase1Decision(ByVal m As MessageBag)
         Dim f As New frmDecision
         f.IsPhase2 = False
@@ -132,7 +164,11 @@ Public Class frmMain
         message.Phase1Decision = f.Phase1Decision
         modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
     End Sub
-
+    ''' <summary>
+    ''' Re confim (phase2) decision
+    ''' </summary>
+    ''' <param name="m"></param>
+    ''' <remarks></remarks>
     Public Sub DisplayPhase2Decision(ByVal m As MessageBag)
         Dim f As New frmDecision
         f.IsPhase2 = True
@@ -146,8 +182,18 @@ Public Class frmMain
         modMain.wskClient.Send(LC.XmlHelper.XmlSerialize(message, System.Text.Encoding.UTF8))
     End Sub
 
+    ''' <summary>
+    ''' Read Instructions
+    ''' </summary>
+    ''' <param name="m"></param>
+    ''' <remarks></remarks>
     Public Sub DisplayInstructions(ByVal m As MessageBag)
-        Me.MScore = m.Score
+        If m.Round.HasValue Then
+            Me.MRound = m.Round.Value
+        End If
+        If m.Score.HasValue Then
+            Me.MScore = m.Score.Value
+        End If
         Dim f As New frmInstructions()
         f.ShowDialog()
         'send 

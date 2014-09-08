@@ -25,10 +25,7 @@ Public Class Group
         End Get
         Set(ByVal value As StatusBase)
             Me.m_status = value
-            'backup every new round
-            If TypeOf value Is StatusNewRound Then
-                Me.BackupMessage()
-            End If
+
         End Set
     End Property
 
@@ -50,14 +47,7 @@ Public Class Group
         End Set
     End Property
 
-    'Public Property Vocabulary() As Vocabulary()
-    '    Get
-    '        Return Me.m_vocabulary
-    '    End Get
-    '    Set(ByVal value As Vocabulary())
-    '        Me.m_vocabulary = value
-    '    End Set
-    'End Property
+
 
     Public Property ScoreMatrix() As LC.ScoreMatrix
         Get
@@ -79,15 +69,24 @@ Public Class Group
         End Set
     End Property
 
+    Public Property MsgFromAllPlayors As List(Of MessageBag)()
+        Get
+            Return m_msgFromAllPlayors
+        End Get
+        Set(ByVal value As List(Of MessageBag)())
+            m_msgFromAllPlayors = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' true if both playor's message received(with same msg type)
     ''' </summary>
     Public Function AllRequiredClientMsgReceived(ByVal mtype As LC.MsgType) As Boolean
 
-        For i As Integer = 0 To m_msgFromAllPlayors.Length - 1
+        For i As Integer = 0 To MsgFromAllPlayors.Length - 1
             Dim containThisType As Boolean = False
-            For j As Integer = 0 To m_msgFromAllPlayors(i).Count - 1
-                If m_msgFromAllPlayors(i)(j).MsgType = mtype Then
+            For j As Integer = 0 To MsgFromAllPlayors(i).Count - 1
+                If MsgFromAllPlayors(i)(j).MsgType = mtype Then
                     containThisType = True
                     Exit For
                 End If
@@ -106,25 +105,16 @@ Public Class Group
         Me.m_status.Group = Me
         Me.m_decision = New String(p.Length - 1) {}
         m_msgReceived = New Boolean(p.Length - 1) {}
-        Me.m_msgFromAllPlayors = New List(Of LC.MessageBag)(p.Length - 1) {}
+        Me.MsgFromAllPlayors = New List(Of LC.MessageBag)(p.Length - 1) {}
 
-        For index As Integer = 0 To m_msgFromAllPlayors.Length - 1
-            Me.m_msgFromAllPlayors(index) = New List(Of LC.MessageBag)()
+        For index As Integer = 0 To MsgFromAllPlayors.Length - 1
+            Me.MsgFromAllPlayors(index) = New List(Of LC.MessageBag)()
         Next
         m_currentRound = 0
     End Sub
 
 
-    Protected Sub BackupMessage()
-        'TODO 
 
-        For index As Integer = 0 To m_msgFromAllPlayors.Length - 1
-            Dim msgs As LC.MessageBag() = Me.m_msgFromAllPlayors(index).ToArray()
-            Me.m_msgFromAllPlayors(index).Clear()
-            'Write To Message File
-            LC.ModuleEventLog.WriteLCMessage(msgs)
-        Next
-    End Sub
 
     Public Sub RegisterPhase1Decision(ByVal m As MessageBag)
         Dim playor As Playor = Game.FindPlayorById(Game.playerList, m.clientID)
@@ -134,7 +124,7 @@ Public Class Group
 
     Public Sub ProcessMsg(ByVal msg As LC.MessageBag, ByVal playor As Playor)
         Dim playorIndex As Integer = Array.IndexOf(Me.m_playors, playor)
-        Me.m_msgFromAllPlayors(playorIndex).Add(msg)
+        Me.MsgFromAllPlayors(playorIndex).Add(msg)
         Me.Status.ReceiveMsg(msg)
         If Not String.IsNullOrEmpty(msg.PlayorName) Then
             Me.m_playors(playorIndex).Name = msg.PlayorName
@@ -164,7 +154,7 @@ Public Class Group
 
     Public Sub SendVocabulary()
         For index As Integer = 0 To Me.Playors.Length - 1
-            Me.Playors(index).SendVocabularyToClient(Me.m_winsock_collection, Me.Playors(index).Vocabulary, Game.meanings)
+            Me.Playors(index).SendVocabularyToClient(Me.m_winsock_collection, Me.Playors(index).Vocabulary, Game.meanings, Game.CurrentRoundNumber)
         Next
     End Sub
 
@@ -187,7 +177,7 @@ Public Class Group
         'calculate cost
         Dim newCommonWords As New List(Of Tuple(Of String, String))()
         For index As Integer = 0 To Me.Playors.Length - 1
-            Dim msg As LC.MessageBag = FindMsgByType(Me.m_msgFromAllPlayors(index), MsgType.Client_sendLearnInvent)
+            Dim msg As LC.MessageBag = FindMsgByType(Me.MsgFromAllPlayors(index), MsgType.Client_sendLearnInvent)
             Dim cost As Integer = 0
             cost += msg.learn
             If Not msg.invent Is Nothing Then
@@ -230,24 +220,24 @@ Public Class Group
     Public Sub ShowResult()
         Dim playor1Decision As String = Nothing
 
-        For index As Integer = 0 To Me.m_msgFromAllPlayors(0).Count - 1
+        For index As Integer = 0 To Me.MsgFromAllPlayors(0).Count - 1
             ' the phase 2 decision(if exists) will override phase 1 decision
-            If m_msgFromAllPlayors(0)(index).MsgType = LC.MsgType.Client_sendPhase1Decision Then
-                playor1Decision = m_msgFromAllPlayors(0)(index).Phase1Decision
+            If MsgFromAllPlayors(0)(index).MsgType = LC.MsgType.Client_sendPhase1Decision Then
+                playor1Decision = MsgFromAllPlayors(0)(index).Phase1Decision
             End If
-            If m_msgFromAllPlayors(0)(index).MsgType = LC.MsgType.Client_sendPhase2Decision Then
-                playor1Decision = m_msgFromAllPlayors(0)(index).Phase2Decision
+            If MsgFromAllPlayors(0)(index).MsgType = LC.MsgType.Client_sendPhase2Decision Then
+                playor1Decision = MsgFromAllPlayors(0)(index).Phase2Decision
             End If
         Next
 
         Dim playor2Decision As String = Nothing
-        For index As Integer = 0 To Me.m_msgFromAllPlayors(1).Count - 1
+        For index As Integer = 0 To Me.MsgFromAllPlayors(1).Count - 1
             ' the phase 2 decision(if exists) will override phase 1 decision
-            If m_msgFromAllPlayors(1)(index).MsgType = LC.MsgType.Client_sendPhase1Decision Then
-                playor2Decision = m_msgFromAllPlayors(1)(index).Phase1Decision
+            If MsgFromAllPlayors(1)(index).MsgType = LC.MsgType.Client_sendPhase1Decision Then
+                playor2Decision = MsgFromAllPlayors(1)(index).Phase1Decision
             End If
-            If m_msgFromAllPlayors(1)(index).MsgType = LC.MsgType.Client_sendPhase2Decision Then
-                playor2Decision = m_msgFromAllPlayors(1)(index).Phase2Decision
+            If MsgFromAllPlayors(1)(index).MsgType = LC.MsgType.Client_sendPhase2Decision Then
+                playor2Decision = MsgFromAllPlayors(1)(index).Phase2Decision
             End If
         Next
         'the final decision 
@@ -259,7 +249,8 @@ Public Class Group
         End If
         Me.Playors(0).Score += result.Item1
         Me.Playors(1).Score += result.Item2
-
+        Me.Playors(0).Score -= Me.Playors(0).Cost
+        Me.Playors(1).Score -= Me.Playors(1).Cost
         For index As Integer = 0 To Me.Playors.Length - 1
             Me.Playors(index).ShowResultOfARound(Me.WinsockCollection, Me.m_decision, Me.Playors(index).Score)
 
@@ -298,7 +289,7 @@ Public Class Group
             If (index Mod 2 = 0) Then
                 Dim p() As Playor = New Playor(1) {playorlist(index), playorlist(index + 1)}
                 grouplist(groupIndex) = New Group(p)
-                grouplist(groupIndex).ScoreMatrix = cooperateMatrix
+                grouplist(groupIndex).ScoreMatrix = Game.CurrentMatrix
                 grouplist(groupIndex).WinsockCollection = sockCol
                 groupIndex += 1
             End If

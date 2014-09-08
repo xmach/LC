@@ -292,7 +292,7 @@ Public Class frmMain
 
     Private Sub cmdGameSetup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGameSetup.Click
         Try
-            frmSetup.Show()
+            frmSetup.ShowDialog()
         Catch ex As Exception
             appEventLog_Write("error cmdGameSetup_Click:", ex)
         End Try
@@ -441,6 +441,7 @@ Public Class frmMain
                 DataGridView1.Rows(i).Cells(2).Value = String.Empty
                 DataGridView1.Rows(i).Cells(3).Value = String.Empty
                 DataGridView1.Rows(i).Cells(4).Value = String.Empty
+                DataGridView1.Rows(i).Cells(5).Value = String.Empty
             Else
                 DataGridView1.Rows(i).Cells(0).Value = playerList(i).ID
                 DataGridView1.Rows(i).Cells(1).Value = playerList(i).Name
@@ -450,7 +451,8 @@ Public Class frmMain
                 Else
                     DataGridView1.Rows(i).Cells(3).Value = playerList(i).Group.Status.ToString()
                 End If
-                DataGridView1.Rows(i).Cells(4).Value = playerList(i).Score.ToString()
+                DataGridView1.Rows(i).Cells(4).Value = Game.CurrentRoundNumber.ToString()
+                DataGridView1.Rows(i).Cells(5).Value = playerList(i).Score.ToString()
             End If
         Next
 

@@ -22,59 +22,62 @@ Partial Class frmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.Main = New System.Windows.Forms.TabPage
-        Me.llESI = New System.Windows.Forms.LinkLabel
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.cmdPrint = New System.Windows.Forms.Button
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.cmdExit = New System.Windows.Forms.Button
-        Me.cmdEnd = New System.Windows.Forms.Button
-        Me.cmdExchange = New System.Windows.Forms.Button
-        Me.cmdSetup2 = New System.Windows.Forms.Button
-        Me.cmdGameSetup = New System.Windows.Forms.Button
-        Me.cmdLoad = New System.Windows.Forms.Button
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.cmdBegin = New System.Windows.Forms.Button
-        Me.cmdReset = New System.Windows.Forms.Button
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.lblConnections = New System.Windows.Forms.Label
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.lblLocalHost = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.lblIP = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.txtMessages = New System.Windows.Forms.TextBox
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView
-        Me.Status = New System.Windows.Forms.TabPage
-        Me.txtTime = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.txtPeriod = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.DataGridView2 = New System.Windows.Forms.DataGridView
-        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.Main = New System.Windows.Forms.TabPage()
+        Me.llESI = New System.Windows.Forms.LinkLabel()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.cmdPrint = New System.Windows.Forms.Button()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.cmdExit = New System.Windows.Forms.Button()
+        Me.cmdEnd = New System.Windows.Forms.Button()
+        Me.cmdExchange = New System.Windows.Forms.Button()
+        Me.cmdSetup2 = New System.Windows.Forms.Button()
+        Me.cmdGameSetup = New System.Windows.Forms.Button()
+        Me.cmdLoad = New System.Windows.Forms.Button()
+        Me.cmdSave = New System.Windows.Forms.Button()
+        Me.cmdBegin = New System.Windows.Forms.Button()
+        Me.cmdReset = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lblConnections = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.lblLocalHost = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.lblIP = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtMessages = New System.Windows.Forms.TextBox()
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.Status = New System.Windows.Forms.TabPage()
+        Me.txtTime = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtPeriod = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.DataGridView2 = New System.Windows.Forms.DataGridView()
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
-        Me.PrintDocument1 = New System.Drawing.Printing.PrintDocument
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
-        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
-        Me.PrintDialog1 = New System.Windows.Forms.PrintDialog
-        Me.PageSetupDialog1 = New System.Windows.Forms.PageSetupDialog
-        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.PrintDocument1 = New System.Drawing.Printing.PrintDocument()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.PrintDialog1 = New System.Windows.Forms.PrintDialog()
+        Me.PageSetupDialog1 = New System.Windows.Forms.PageSetupDialog()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.lblCurrentRound = New System.Windows.Forms.Label()
         Me.TabControl1.SuspendLayout()
         Me.Main.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -92,7 +95,7 @@ Partial Class frmMain
         Me.TabControl1.Location = New System.Drawing.Point(2, 2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1014, 731)
+        Me.TabControl1.Size = New System.Drawing.Size(1014, 675)
         Me.TabControl1.TabIndex = 0
         '
         'Main
@@ -111,7 +114,7 @@ Partial Class frmMain
         Me.Main.Location = New System.Drawing.Point(4, 25)
         Me.Main.Name = "Main"
         Me.Main.Padding = New System.Windows.Forms.Padding(3)
-        Me.Main.Size = New System.Drawing.Size(1006, 702)
+        Me.Main.Size = New System.Drawing.Size(1006, 646)
         Me.Main.TabIndex = 0
         Me.Main.Text = "Main"
         '
@@ -119,7 +122,7 @@ Partial Class frmMain
         '
         Me.llESI.AutoSize = True
         Me.llESI.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.llESI.Location = New System.Drawing.Point(5, 649)
+        Me.llESI.Location = New System.Drawing.Point(5, 599)
         Me.llESI.Name = "llESI"
         Me.llESI.Size = New System.Drawing.Size(409, 16)
         Me.llESI.TabIndex = 32
@@ -129,9 +132,9 @@ Partial Class frmMain
         'Label7
         '
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(652, 649)
+        Me.Label7.Location = New System.Drawing.Point(652, 599)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(347, 32)
+        Me.Label7.Size = New System.Drawing.Size(347, 30)
         Me.Label7.TabIndex = 31
         Me.Label7.Text = "Designed By: Jeffrey Kirchner, Your Name Here, and Faculty Names Here"
         '
@@ -139,7 +142,7 @@ Partial Class frmMain
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(5, 668)
+        Me.Label8.Location = New System.Drawing.Point(5, 617)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(383, 16)
         Me.Label8.TabIndex = 30
@@ -150,9 +153,9 @@ Partial Class frmMain
         Me.cmdPrint.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdPrint.Image = CType(resources.GetObject("cmdPrint.Image"), System.Drawing.Image)
         Me.cmdPrint.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdPrint.Location = New System.Drawing.Point(476, 650)
+        Me.cmdPrint.Location = New System.Drawing.Point(476, 600)
         Me.cmdPrint.Name = "cmdPrint"
-        Me.cmdPrint.Size = New System.Drawing.Size(73, 34)
+        Me.cmdPrint.Size = New System.Drawing.Size(73, 31)
         Me.cmdPrint.TabIndex = 29
         Me.cmdPrint.Text = "Print "
         Me.cmdPrint.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -171,18 +174,18 @@ Partial Class frmMain
         Me.GroupBox2.Controls.Add(Me.cmdBegin)
         Me.GroupBox2.Controls.Add(Me.cmdReset)
         Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(237, 7)
+        Me.GroupBox2.Location = New System.Drawing.Point(237, 6)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(762, 119)
+        Me.GroupBox2.Size = New System.Drawing.Size(762, 110)
         Me.GroupBox2.TabIndex = 28
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Control"
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(507, 14)
+        Me.Button1.Location = New System.Drawing.Point(507, 13)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.Size = New System.Drawing.Size(75, 21)
         Me.Button1.TabIndex = 35
         Me.Button1.Text = "TestSend"
         Me.Button1.UseVisualStyleBackColor = True
@@ -191,9 +194,9 @@ Partial Class frmMain
         '
         Me.cmdExit.Image = CType(resources.GetObject("cmdExit.Image"), System.Drawing.Image)
         Me.cmdExit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdExit.Location = New System.Drawing.Point(630, 43)
+        Me.cmdExit.Location = New System.Drawing.Point(630, 40)
         Me.cmdExit.Name = "cmdExit"
-        Me.cmdExit.Size = New System.Drawing.Size(117, 44)
+        Me.cmdExit.Size = New System.Drawing.Size(117, 41)
         Me.cmdExit.TabIndex = 34
         Me.cmdExit.Text = "     Exit"
         '
@@ -202,18 +205,18 @@ Partial Class frmMain
         Me.cmdEnd.Enabled = False
         Me.cmdEnd.Image = CType(resources.GetObject("cmdEnd.Image"), System.Drawing.Image)
         Me.cmdEnd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdEnd.Location = New System.Drawing.Point(507, 43)
+        Me.cmdEnd.Location = New System.Drawing.Point(507, 40)
         Me.cmdEnd.Name = "cmdEnd"
-        Me.cmdEnd.Size = New System.Drawing.Size(117, 44)
+        Me.cmdEnd.Size = New System.Drawing.Size(117, 41)
         Me.cmdEnd.TabIndex = 33
         Me.cmdEnd.Text = "       End Early"
         '
         'cmdExchange
         '
         Me.cmdExchange.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdExchange.Location = New System.Drawing.Point(384, 21)
+        Me.cmdExchange.Location = New System.Drawing.Point(384, 19)
         Me.cmdExchange.Name = "cmdExchange"
-        Me.cmdExchange.Size = New System.Drawing.Size(88, 44)
+        Me.cmdExchange.Size = New System.Drawing.Size(88, 41)
         Me.cmdExchange.TabIndex = 32
         Me.cmdExchange.Text = "       Symbols"
         '
@@ -221,9 +224,9 @@ Partial Class frmMain
         '
         Me.cmdSetup2.Image = CType(resources.GetObject("cmdSetup2.Image"), System.Drawing.Image)
         Me.cmdSetup2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdSetup2.Location = New System.Drawing.Point(384, 69)
+        Me.cmdSetup2.Location = New System.Drawing.Point(384, 64)
         Me.cmdSetup2.Name = "cmdSetup2"
-        Me.cmdSetup2.Size = New System.Drawing.Size(117, 44)
+        Me.cmdSetup2.Size = New System.Drawing.Size(117, 41)
         Me.cmdSetup2.TabIndex = 31
         Me.cmdSetup2.Text = "     Score" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "     Matrix"
         '
@@ -231,9 +234,9 @@ Partial Class frmMain
         '
         Me.cmdGameSetup.Image = CType(resources.GetObject("cmdGameSetup.Image"), System.Drawing.Image)
         Me.cmdGameSetup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdGameSetup.Location = New System.Drawing.Point(261, 43)
+        Me.cmdGameSetup.Location = New System.Drawing.Point(261, 40)
         Me.cmdGameSetup.Name = "cmdGameSetup"
-        Me.cmdGameSetup.Size = New System.Drawing.Size(101, 44)
+        Me.cmdGameSetup.Size = New System.Drawing.Size(101, 41)
         Me.cmdGameSetup.TabIndex = 30
         Me.cmdGameSetup.Text = "     Game " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "     Setup"
         '
@@ -241,9 +244,9 @@ Partial Class frmMain
         '
         Me.cmdLoad.Image = CType(resources.GetObject("cmdLoad.Image"), System.Drawing.Image)
         Me.cmdLoad.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdLoad.Location = New System.Drawing.Point(138, 69)
+        Me.cmdLoad.Location = New System.Drawing.Point(138, 64)
         Me.cmdLoad.Name = "cmdLoad"
-        Me.cmdLoad.Size = New System.Drawing.Size(117, 44)
+        Me.cmdLoad.Size = New System.Drawing.Size(117, 41)
         Me.cmdLoad.TabIndex = 29
         Me.cmdLoad.Text = "      Load"
         '
@@ -251,9 +254,9 @@ Partial Class frmMain
         '
         Me.cmdSave.Image = CType(resources.GetObject("cmdSave.Image"), System.Drawing.Image)
         Me.cmdSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdSave.Location = New System.Drawing.Point(138, 19)
+        Me.cmdSave.Location = New System.Drawing.Point(138, 18)
         Me.cmdSave.Name = "cmdSave"
-        Me.cmdSave.Size = New System.Drawing.Size(117, 44)
+        Me.cmdSave.Size = New System.Drawing.Size(117, 41)
         Me.cmdSave.TabIndex = 28
         Me.cmdSave.Text = "      Save"
         '
@@ -261,9 +264,9 @@ Partial Class frmMain
         '
         Me.cmdBegin.Image = CType(resources.GetObject("cmdBegin.Image"), System.Drawing.Image)
         Me.cmdBegin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdBegin.Location = New System.Drawing.Point(15, 19)
+        Me.cmdBegin.Location = New System.Drawing.Point(15, 18)
         Me.cmdBegin.Name = "cmdBegin"
-        Me.cmdBegin.Size = New System.Drawing.Size(117, 44)
+        Me.cmdBegin.Size = New System.Drawing.Size(117, 41)
         Me.cmdBegin.TabIndex = 27
         Me.cmdBegin.Text = "      Begin"
         '
@@ -271,14 +274,16 @@ Partial Class frmMain
         '
         Me.cmdReset.Image = CType(resources.GetObject("cmdReset.Image"), System.Drawing.Image)
         Me.cmdReset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdReset.Location = New System.Drawing.Point(15, 69)
+        Me.cmdReset.Location = New System.Drawing.Point(15, 64)
         Me.cmdReset.Name = "cmdReset"
-        Me.cmdReset.Size = New System.Drawing.Size(117, 44)
+        Me.cmdReset.Size = New System.Drawing.Size(117, 41)
         Me.cmdReset.TabIndex = 26
         Me.cmdReset.Text = "       Reset"
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lblCurrentRound)
+        Me.GroupBox1.Controls.Add(Me.Label6)
         Me.GroupBox1.Controls.Add(Me.lblConnections)
         Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Controls.Add(Me.lblLocalHost)
@@ -286,9 +291,9 @@ Partial Class frmMain
         Me.GroupBox1.Controls.Add(Me.lblIP)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(5, 7)
+        Me.GroupBox1.Location = New System.Drawing.Point(5, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(226, 119)
+        Me.GroupBox1.Size = New System.Drawing.Size(226, 110)
         Me.GroupBox1.TabIndex = 27
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Status"
@@ -296,7 +301,7 @@ Partial Class frmMain
         'lblConnections
         '
         Me.lblConnections.AutoSize = True
-        Me.lblConnections.Location = New System.Drawing.Point(105, 65)
+        Me.lblConnections.Location = New System.Drawing.Point(105, 60)
         Me.lblConnections.Name = "lblConnections"
         Me.lblConnections.Size = New System.Drawing.Size(16, 16)
         Me.lblConnections.TabIndex = 5
@@ -305,7 +310,7 @@ Partial Class frmMain
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(6, 65)
+        Me.Label5.Location = New System.Drawing.Point(6, 60)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(93, 16)
         Me.Label5.TabIndex = 4
@@ -314,7 +319,7 @@ Partial Class frmMain
         'lblLocalHost
         '
         Me.lblLocalHost.AutoSize = True
-        Me.lblLocalHost.Location = New System.Drawing.Point(105, 43)
+        Me.lblLocalHost.Location = New System.Drawing.Point(105, 40)
         Me.lblLocalHost.Name = "lblLocalHost"
         Me.lblLocalHost.Size = New System.Drawing.Size(75, 16)
         Me.lblLocalHost.TabIndex = 3
@@ -323,7 +328,7 @@ Partial Class frmMain
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(6, 43)
+        Me.Label3.Location = New System.Drawing.Point(6, 40)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(40, 16)
         Me.Label3.TabIndex = 2
@@ -332,7 +337,7 @@ Partial Class frmMain
         'lblIP
         '
         Me.lblIP.AutoSize = True
-        Me.lblIP.Location = New System.Drawing.Point(105, 21)
+        Me.lblIP.Location = New System.Drawing.Point(105, 19)
         Me.lblIP.Name = "lblIP"
         Me.lblIP.Size = New System.Drawing.Size(68, 16)
         Me.lblIP.TabIndex = 1
@@ -341,7 +346,7 @@ Partial Class frmMain
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 21)
+        Me.Label1.Location = New System.Drawing.Point(6, 19)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(84, 16)
         Me.Label1.TabIndex = 0
@@ -349,11 +354,11 @@ Partial Class frmMain
         '
         'txtMessages
         '
-        Me.txtMessages.Location = New System.Drawing.Point(1, 687)
+        Me.txtMessages.Location = New System.Drawing.Point(1, 634)
         Me.txtMessages.Multiline = True
         Me.txtMessages.Name = "txtMessages"
         Me.txtMessages.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtMessages.Size = New System.Drawing.Size(997, 27)
+        Me.txtMessages.Size = New System.Drawing.Size(997, 25)
         Me.txtMessages.TabIndex = 26
         Me.txtMessages.Visible = False
         '
@@ -366,15 +371,15 @@ Partial Class frmMain
         DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2, Me.Column5, Me.Column3, Me.Column4})
-        Me.DataGridView1.Location = New System.Drawing.Point(2, 132)
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2, Me.Column5, Me.Column3, Me.Column6, Me.Column4})
+        Me.DataGridView1.Location = New System.Drawing.Point(2, 122)
         Me.DataGridView1.MultiSelect = False
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.ReadOnly = True
         Me.DataGridView1.RowHeadersVisible = False
         Me.DataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DataGridView1.Size = New System.Drawing.Size(997, 512)
+        Me.DataGridView1.Size = New System.Drawing.Size(997, 473)
         Me.DataGridView1.TabIndex = 25
         '
         'Status
@@ -389,7 +394,7 @@ Partial Class frmMain
         Me.Status.Location = New System.Drawing.Point(4, 25)
         Me.Status.Name = "Status"
         Me.Status.Padding = New System.Windows.Forms.Padding(3)
-        Me.Status.Size = New System.Drawing.Size(1006, 702)
+        Me.Status.Size = New System.Drawing.Size(1006, 646)
         Me.Status.TabIndex = 1
         Me.Status.Text = "Status"
         '
@@ -397,7 +402,7 @@ Partial Class frmMain
         '
         Me.txtTime.BackColor = System.Drawing.Color.White
         Me.txtTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTime.Location = New System.Drawing.Point(13, 664)
+        Me.txtTime.Location = New System.Drawing.Point(13, 613)
         Me.txtTime.Name = "txtTime"
         Me.txtTime.ReadOnly = True
         Me.txtTime.Size = New System.Drawing.Size(64, 26)
@@ -409,7 +414,7 @@ Partial Class frmMain
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(20, 641)
+        Me.Label2.Location = New System.Drawing.Point(20, 592)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(47, 20)
         Me.Label2.TabIndex = 38
@@ -419,7 +424,7 @@ Partial Class frmMain
         '
         Me.txtPeriod.BackColor = System.Drawing.Color.White
         Me.txtPeriod.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPeriod.Location = New System.Drawing.Point(83, 664)
+        Me.txtPeriod.Location = New System.Drawing.Point(83, 613)
         Me.txtPeriod.Name = "txtPeriod"
         Me.txtPeriod.ReadOnly = True
         Me.txtPeriod.Size = New System.Drawing.Size(64, 26)
@@ -431,7 +436,7 @@ Partial Class frmMain
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(84, 641)
+        Me.Label4.Location = New System.Drawing.Point(84, 592)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(60, 20)
         Me.Label4.TabIndex = 36
@@ -454,7 +459,7 @@ Partial Class frmMain
         Me.DataGridView2.RowHeadersVisible = False
         Me.DataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.DataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DataGridView2.Size = New System.Drawing.Size(997, 380)
+        Me.DataGridView2.Size = New System.Drawing.Size(997, 351)
         Me.DataGridView2.TabIndex = 35
         '
         'DataGridViewTextBoxColumn1
@@ -502,9 +507,6 @@ Partial Class frmMain
         'Timer3
         '
         '
-        'PrintDocument1
-        '
-        '
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
@@ -513,6 +515,15 @@ Partial Class frmMain
         '
         Me.PrintDialog1.Document = Me.PrintDocument1
         Me.PrintDialog1.UseEXDialog = True
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(6, 76)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(106, 16)
+        Me.Label6.TabIndex = 6
+        Me.Label6.Text = "Current Round"
         '
         'Column1
         '
@@ -534,7 +545,7 @@ Partial Class frmMain
         Me.Column5.HeaderText = "IP"
         Me.Column5.Name = "Column5"
         Me.Column5.ReadOnly = True
-        Me.Column5.Width = 550
+        Me.Column5.Width = 450
         '
         'Column3
         '
@@ -544,6 +555,13 @@ Partial Class frmMain
         Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column3.Width = 200
         '
+        'Column6
+        '
+        Me.Column6.HeaderText = "Round"
+        Me.Column6.Name = "Column6"
+        Me.Column6.ReadOnly = True
+        Me.Column6.Visible = False
+        '
         'Column4
         '
         Me.Column4.HeaderText = "Score"
@@ -551,11 +569,20 @@ Partial Class frmMain
         Me.Column4.ReadOnly = True
         Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
+        'lblCurrentRound
+        '
+        Me.lblCurrentRound.AutoSize = True
+        Me.lblCurrentRound.Location = New System.Drawing.Point(118, 76)
+        Me.lblCurrentRound.Name = "lblCurrentRound"
+        Me.lblCurrentRound.Size = New System.Drawing.Size(16, 16)
+        Me.lblCurrentRound.TabIndex = 7
+        Me.lblCurrentRound.Text = "0"
+        '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1016, 734)
+        Me.ClientSize = New System.Drawing.Size(1016, 678)
         Me.ControlBox = False
         Me.Controls.Add(Me.TabControl1)
         Me.Cursor = System.Windows.Forms.Cursors.Default
@@ -619,10 +646,13 @@ Partial Class frmMain
     Friend WithEvents PrintDialog1 As System.Windows.Forms.PrintDialog
     Friend WithEvents PageSetupDialog1 As System.Windows.Forms.PageSetupDialog
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents lblCurrentRound As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column2 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column5 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column3 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column6 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column4 As System.Windows.Forms.DataGridViewTextBoxColumn
 
 End Class

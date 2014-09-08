@@ -86,6 +86,7 @@
     <Compile Include="frmSetup.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="game\GameType.vb" />
     <Compile Include="game\Group.vb" />
     <Compile Include="game\Playor.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

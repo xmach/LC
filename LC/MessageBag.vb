@@ -19,7 +19,9 @@ Public Class MessageBag
     <XmlElement()> _
     Public Decision As String()
     <XmlElement()> _
-    Public Score As Integer
+    Public Score As Nullable(Of Integer)
+    <XmlElement()> _
+    Public Round As Nullable(Of Integer)
     <XmlAttribute()> _
     Public randomSelectedDecision As String
 

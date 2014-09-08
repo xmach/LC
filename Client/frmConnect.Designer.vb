@@ -34,7 +34,7 @@ Partial Class frmConnect
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(11, 54)
+        Me.Label2.Location = New System.Drawing.Point(11, 50)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(57, 20)
         Me.Label2.TabIndex = 16
@@ -43,7 +43,7 @@ Partial Class frmConnect
         'txtPort
         '
         Me.txtPort.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPort.Location = New System.Drawing.Point(86, 48)
+        Me.txtPort.Location = New System.Drawing.Point(86, 44)
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(187, 26)
         Me.txtPort.TabIndex = 15
@@ -52,9 +52,9 @@ Partial Class frmConnect
         'cmdConnect
         '
         Me.cmdConnect.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdConnect.Location = New System.Drawing.Point(15, 80)
+        Me.cmdConnect.Location = New System.Drawing.Point(15, 86)
         Me.cmdConnect.Name = "cmdConnect"
-        Me.cmdConnect.Size = New System.Drawing.Size(258, 33)
+        Me.cmdConnect.Size = New System.Drawing.Size(258, 30)
         Me.cmdConnect.TabIndex = 14
         Me.cmdConnect.Text = "Connect"
         Me.cmdConnect.UseVisualStyleBackColor = True
@@ -63,7 +63,7 @@ Partial Class frmConnect
         '
         Me.label1.AutoSize = True
         Me.label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.label1.Location = New System.Drawing.Point(11, 18)
+        Me.label1.Location = New System.Drawing.Point(11, 17)
         Me.label1.Name = "label1"
         Me.label1.Size = New System.Drawing.Size(69, 20)
         Me.label1.TabIndex = 13
@@ -72,7 +72,7 @@ Partial Class frmConnect
         'txtIP
         '
         Me.txtIP.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtIP.Location = New System.Drawing.Point(86, 12)
+        Me.txtIP.Location = New System.Drawing.Point(86, 11)
         Me.txtIP.Name = "txtIP"
         Me.txtIP.Size = New System.Drawing.Size(187, 26)
         Me.txtIP.TabIndex = 12
@@ -80,9 +80,9 @@ Partial Class frmConnect
         '
         'frmConnect
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(283, 122)
+        Me.ClientSize = New System.Drawing.Size(283, 139)
         Me.ControlBox = False
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.txtPort)
