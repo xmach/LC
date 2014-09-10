@@ -1,23 +1,26 @@
 Imports LC
 Public Class Group
 
-    Private m_playors As Playor()
+    Private m_Players As Player()
     Private m_status As StatusBase
     Private m_winsock_collection As LC.WinsockCollection
     'Private m_vocabulary() As Vocabulary
     Private m_decision() As String
     Private m_msgReceived() As Boolean
     Private m_scoreMatrix As LC.ScoreMatrix
-    Private m_msgFromAllPlayors() As List(Of LC.MessageBag)
-    Private m_currentRound As Integer
+    Private m_msgFromAllPlayers() As List(Of LC.MessageBag)
+    'Private m_currentRound As Integer
 
     Private Event StatusUpdated(ByVal sender As Object, ByVal e As System.EventArgs)
 
-    Public ReadOnly Property currentRound() As Integer
-        Get
-            Return Me.m_currentRound
-        End Get
-    End Property
+    'Public Property CurrentRound() As Integer
+    '    Get
+    '        Return Me.m_currentRound
+    '    End Get
+    '    Set(ByVal value As Integer)
+    '        m_currentRound = value
+    '    End Set
+    'End Property
 
     Public Property Status() As StatusBase
         Get
@@ -29,12 +32,12 @@ Public Class Group
         End Set
     End Property
 
-    Public Property Playors() As Playor()
+    Public Property Players() As Player()
         Get
-            Return Me.m_playors
+            Return Me.m_players
         End Get
-        Set(ByVal value As Playor())
-            Me.m_playors = value
+        Set(ByVal value As Player())
+            Me.m_Players = value
         End Set
     End Property
 
@@ -69,24 +72,24 @@ Public Class Group
         End Set
     End Property
 
-    Public Property MsgFromAllPlayors As List(Of MessageBag)()
+    Public Property MsgFromAllPlayers() As List(Of MessageBag)()
         Get
-            Return m_msgFromAllPlayors
+            Return m_msgFromAllPlayers
         End Get
         Set(ByVal value As List(Of MessageBag)())
-            m_msgFromAllPlayors = value
+            m_msgFromAllPlayers = value
         End Set
     End Property
 
     ''' <summary>
-    ''' true if both playor's message received(with same msg type)
+    ''' true if both Player's message received(with same msg type)
     ''' </summary>
     Public Function AllRequiredClientMsgReceived(ByVal mtype As LC.MsgType) As Boolean
 
-        For i As Integer = 0 To MsgFromAllPlayors.Length - 1
+        For i As Integer = 0 To MsgFromAllPlayers.Length - 1
             Dim containThisType As Boolean = False
-            For j As Integer = 0 To MsgFromAllPlayors(i).Count - 1
-                If MsgFromAllPlayors(i)(j).MsgType = mtype Then
+            For j As Integer = 0 To MsgFromAllPlayers(i).Count - 1
+                If MsgFromAllPlayers(i)(j).MsgType = mtype Then
                     containThisType = True
                     Exit For
                 End If
@@ -98,69 +101,67 @@ Public Class Group
         Return True
     End Function
 
-    Public Sub New(ByVal p As Playor())
-        Me.m_playors = p
+    Public Sub New(ByVal p As Player())
+        Me.m_Players = p
 
         Me.m_status = New StatusConnected(Me)
         Me.m_status.Group = Me
         Me.m_decision = New String(p.Length - 1) {}
         m_msgReceived = New Boolean(p.Length - 1) {}
-        Me.MsgFromAllPlayors = New List(Of LC.MessageBag)(p.Length - 1) {}
+        Me.MsgFromAllPlayers = New List(Of LC.MessageBag)(p.Length - 1) {}
 
-        For index As Integer = 0 To MsgFromAllPlayors.Length - 1
-            Me.MsgFromAllPlayors(index) = New List(Of LC.MessageBag)()
+        For index As Integer = 0 To MsgFromAllPlayers.Length - 1
+            Me.MsgFromAllPlayers(index) = New List(Of LC.MessageBag)()
         Next
-        m_currentRound = 0
+        'm_currentRound = 0
     End Sub
-
-
-
 
     Public Sub RegisterPhase1Decision(ByVal m As MessageBag)
-        Dim playor As Playor = Game.FindPlayorById(Game.playerList, m.clientID)
-        Dim playorIndex As Integer = Array.IndexOf(Me.m_playors, playor)
-        Me.Decision(playorIndex) = m.Phase1Decision
+        Dim p As Player = Game.FindPlayerById(Game.playerList, m.clientID)
+        p.Phase1_decision = m.Phase1Decision
+        Dim PlayerIndex As Integer = Array.IndexOf(Me.m_Players, p)
+        Me.Decision(PlayerIndex) = m.Phase1Decision
     End Sub
 
-    Public Sub ProcessMsg(ByVal msg As LC.MessageBag, ByVal playor As Playor)
-        Dim playorIndex As Integer = Array.IndexOf(Me.m_playors, playor)
-        Me.MsgFromAllPlayors(playorIndex).Add(msg)
+    Public Sub RegisterPhase2Decision(ByVal m As MessageBag)
+        Dim p As Player = Game.FindPlayerById(Game.playerList, m.clientID)
+        p.Phase2_decision = m.Phase1Decision
+        Dim PlayerIndex As Integer = Array.IndexOf(Me.m_Players, p)
+        Me.Decision(PlayerIndex) = m.Phase2Decision
+    End Sub
+
+    Public Sub ProcessMsg(ByVal msg As LC.MessageBag, ByVal Player As Player)
+        Dim PlayerIndex As Integer = Array.IndexOf(Me.m_Players, Player)
+        Me.MsgFromAllPlayers(PlayerIndex).Add(msg)
         Me.Status.ReceiveMsg(msg)
-        If Not String.IsNullOrEmpty(msg.PlayorName) Then
-            Me.m_playors(playorIndex).Name = msg.PlayorName
+        If Not String.IsNullOrEmpty(msg.PlayerName) Then
+            Me.m_Players(PlayerIndex).Name = msg.PlayerName
         End If
     End Sub
 
-    ''' <summary>
-    ''' signal both playor to begin
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub Begin()
-        If TypeOf Me.Status Is StatusConnected Then
-            'TODO Me.m_status.ReceiveMsg(MsgType.beginGame, Nothing)
-            Me.m_currentRound = 1
-            For index As Integer = 0 To Me.Playors.Length - 1
-                Me.Playors(index).DisplayInstruction(Me.WinsockCollection)
-            Next
-        Else
-            Throw New Exception("Game already started")
-        End If
-    End Sub
+
 
     Public Sub NewRound()
         Me.Status = New StatusNewRound(Me)
+        'reset player 
+        For index As Integer = 0 To Me.Players.Length - 1
+            Me.Players(index).Num_of_invent = CType(Nothing, Nullable(Of Integer))
+            Me.Players(index).Num_of_learn = CType(Nothing, Nullable(Of Integer))
+            Me.Players(index).Phase1_decision = Nothing
+            Me.Players(index).Phase2_decision = Nothing
+        Next
         Me.SendVocabulary()
     End Sub
 
     Public Sub SendVocabulary()
-        For index As Integer = 0 To Me.Playors.Length - 1
-            Me.Playors(index).SendVocabularyToClient(Me.m_winsock_collection, Me.Playors(index).Vocabulary, Game.meanings, Game.CurrentRoundNumber)
+        For index As Integer = 0 To Me.Players.Length - 1
+            Me.Players(index).SendVocabularyToClient(Me.m_winsock_collection, Me.Players(index).Vocabulary, Game.meanings, Game.CurrentRoundNumber)
         Next
     End Sub
 
     Public Sub ShowScoreMatrix()
-        For index As Integer = 0 To Me.Playors.Length - 1
-            Me.Playors(index).SendScoreMatrixToClient(Me.WinsockCollection, Me.m_scoreMatrix)
+        For index As Integer = 0 To Me.Players.Length - 1
+            Me.Players(index).SendScoreMatrixToClient(Me.WinsockCollection, Me.m_scoreMatrix)
         Next
     End Sub
 
@@ -171,35 +172,37 @@ Public Class Group
     Public Sub UpdateVocabulary()
         'TODO
         'Deserialize the input ,then update vocabulary
-        'playor id = xxx
+        'Player id = xxx
         ' for the common part ,remove it from other's private list to all common list
         ' for the private part ,add
         'calculate cost
         Dim newCommonWords As New List(Of Tuple(Of String, String))()
-        For index As Integer = 0 To Me.Playors.Length - 1
-            Dim msg As LC.MessageBag = FindMsgByType(Me.MsgFromAllPlayors(index), MsgType.Client_sendLearnInvent)
+        For index As Integer = 0 To Me.Players.Length - 1
+            Dim msg As LC.MessageBag = FindMsgByType(Me.MsgFromAllPlayers(index), MsgType.Client_sendLearnInvent)
+            Me.Players(index).Num_of_learn = msg.learn
+            Me.Players(index).Num_of_invent = CType(IIf(msg.invent Is Nothing, 0, msg.invent.Length), Integer)
             Dim cost As Integer = 0
             cost += msg.learn
             If Not msg.invent Is Nothing Then
                 cost += Convert.ToInt32(0.5 * msg.invent.Length * (msg.invent.Length + 1))
             End If
-            m_playors(index).Cost = cost
+            m_Players(index).Cost = cost
 
-            'for learn : move another playor's private list to common list
-            Dim learnedWords As List(Of Tuple(Of String, String)) = Playors(1 - index).Vocabulary.Learn(msg.learn)
-            'Playors(index).Vocabulary.m_commlist = newCommonlist
+            'for learn : move another Player's private list to common list
+            Dim learnedWords As List(Of Tuple(Of String, String)) = Players(1 - index).Vocabulary.Learn(msg.learn)
+            'Players(index).Vocabulary.m_commlist = newCommonlist
             newCommonWords.AddRange(learnedWords)
             If Not msg.invent Is Nothing Then
                 'for invent
                 For priSymIndex As Integer = 0 To msg.invent.Length - 1
-                    Playors(index).Vocabulary.AddPrivateList(msg.invent(priSymIndex).Item1, msg.invent(priSymIndex).Item2)
+                    Players(index).Vocabulary.AddPrivateList(msg.invent(priSymIndex).Item1, msg.invent(priSymIndex).Item2)
                 Next
             End If
         Next
-        'refresh both playors' common list
-        For index As Integer = 0 To Me.Playors.Length - 1
+        'refresh both Players' common list
+        For index As Integer = 0 To Me.Players.Length - 1
             For j As Integer = 0 To newCommonWords.Count - 1
-                Playors(index).Vocabulary.AddCommonList(newCommonWords(j).Item1, newCommonWords(j).Item2)
+                Players(index).Vocabulary.AddCommonList(newCommonWords(j).Item1, newCommonWords(j).Item2)
             Next
         Next
     End Sub
@@ -215,90 +218,61 @@ Public Class Group
     End Function
 
     ''' <summary>
-    '''collect all playor's final decision and update their score
+    '''collect all Player's final decision and update their score
     ''' </summary>
     Public Sub ShowResult()
-        Dim playor1Decision As String = Nothing
+        Dim Player1Decision As String = Nothing
 
-        For index As Integer = 0 To Me.MsgFromAllPlayors(0).Count - 1
+        For index As Integer = 0 To Me.MsgFromAllPlayers(0).Count - 1
             ' the phase 2 decision(if exists) will override phase 1 decision
-            If MsgFromAllPlayors(0)(index).MsgType = LC.MsgType.Client_sendPhase1Decision Then
-                playor1Decision = MsgFromAllPlayors(0)(index).Phase1Decision
+            If MsgFromAllPlayers(0)(index).MsgType = LC.MsgType.Client_sendPhase1Decision Then
+                Player1Decision = MsgFromAllPlayers(0)(index).Phase1Decision
             End If
-            If MsgFromAllPlayors(0)(index).MsgType = LC.MsgType.Client_sendPhase2Decision Then
-                playor1Decision = MsgFromAllPlayors(0)(index).Phase2Decision
+            If MsgFromAllPlayers(0)(index).MsgType = LC.MsgType.Client_sendPhase2Decision Then
+                Player1Decision = MsgFromAllPlayers(0)(index).Phase2Decision
             End If
         Next
 
-        Dim playor2Decision As String = Nothing
-        For index As Integer = 0 To Me.MsgFromAllPlayors(1).Count - 1
+        Dim Player2Decision As String = Nothing
+        For index As Integer = 0 To Me.MsgFromAllPlayers(1).Count - 1
             ' the phase 2 decision(if exists) will override phase 1 decision
-            If MsgFromAllPlayors(1)(index).MsgType = LC.MsgType.Client_sendPhase1Decision Then
-                playor2Decision = MsgFromAllPlayors(1)(index).Phase1Decision
+            If MsgFromAllPlayers(1)(index).MsgType = LC.MsgType.Client_sendPhase1Decision Then
+                Player2Decision = MsgFromAllPlayers(1)(index).Phase1Decision
             End If
-            If MsgFromAllPlayors(1)(index).MsgType = LC.MsgType.Client_sendPhase2Decision Then
-                playor2Decision = MsgFromAllPlayors(1)(index).Phase2Decision
+            If MsgFromAllPlayers(1)(index).MsgType = LC.MsgType.Client_sendPhase2Decision Then
+                Player2Decision = MsgFromAllPlayers(1)(index).Phase2Decision
             End If
         Next
         'the final decision 
-        Me.Decision = New String() {playor1Decision, playor2Decision}
+        Me.Decision = New String() {Player1Decision, Player2Decision}
 
-        Dim result As Tuple(Of Integer, Integer) = Me.ScoreMatrix.GetScore(playor1Decision, playor2Decision)
+        Dim result As Tuple(Of Integer, Integer) = Me.ScoreMatrix.GetScore(Player1Decision, Player2Decision)
         If result Is Nothing Then
-            Throw New Exception("Can't find score in matrix by:" + playor1Decision + "," + playor2Decision)
+            Throw New Exception("Can't find score in matrix by:" + Player1Decision + "," + Player2Decision)
         End If
-        Me.Playors(0).Score += result.Item1
-        Me.Playors(1).Score += result.Item2
-        Me.Playors(0).Score -= Me.Playors(0).Cost
-        Me.Playors(1).Score -= Me.Playors(1).Cost
-        For index As Integer = 0 To Me.Playors.Length - 1
-            Me.Playors(index).ShowResultOfARound(Me.WinsockCollection, Me.m_decision, Me.Playors(index).Score)
+        Me.Players(0).Score += result.Item1
+        Me.Players(1).Score += result.Item2
+        Me.Players(0).Score -= Me.Players(0).Cost
+        Me.Players(1).Score -= Me.Players(1).Cost
+        For index As Integer = 0 To Me.Players.Length - 1
+            Me.Players(index).ShowResultOfARound(Me.WinsockCollection, Me.m_decision, Me.Players(index).Score)
 
         Next
 
     End Sub
 
-    'random select 1 playor to observe the other's phase 1 decision
+    'random select 1 Player to observe the other's phase 1 decision
     Public Sub RandomShowPhase1()
         Dim randNumber As Integer = modRand.rand(99, 0)
-        Dim playorIndex = randNumber Mod 2
+        Dim PlayerIndex = randNumber Mod 2
 
-        Me.Playors(playorIndex).ShowPhase1(Me.WinsockCollection, Me.Decision(1 - playorIndex), Me.ScoreMatrix)
+        Me.Players(PlayerIndex).ShowPhase1(Me.WinsockCollection, Me.Decision(1 - PlayerIndex), Me.ScoreMatrix)
     End Sub
 
 
 
-    ''' <summary>
-    ''' every 2 playor into 1 group(game) 
-    ''' </summary>
-    ''' <param name="playorlist"></param>
-    ''' <param name="grouplist"></param>
-    ''' <param name="vocabularyList"></param>
-    ''' <param name="iniScore"></param>
-    ''' <remarks></remarks>
-    Public Shared Sub MakeGroups(ByVal playorlist As Playor(), _
-                                ByVal grouplist As Group(), _
-                                ByVal vocabularyList As List(Of Vocabulary), _
-                                ByVal iniScore As Integer, _
-                                ByVal cooperateMatrix As ScoreMatrix, _
-                                ByVal competeMatrix As ScoreMatrix, _
-                                ByVal sockCol As WinsockCollection)
-        Dim groupIndex As Integer = 0
 
-        For index As Integer = 0 To playorlist.Length - 1
-            If (index Mod 2 = 0) Then
-                Dim p() As Playor = New Playor(1) {playorlist(index), playorlist(index + 1)}
-                grouplist(groupIndex) = New Group(p)
-                grouplist(groupIndex).ScoreMatrix = Game.CurrentMatrix
-                grouplist(groupIndex).WinsockCollection = sockCol
-                groupIndex += 1
-            End If
-            playorlist(index).Group = grouplist(groupIndex - 1)
-            playorlist(index).Score = iniScore
-            playorlist(index).Vocabulary = vocabularyList(index)
-        Next
 
-    End Sub
 
 
 End Class
