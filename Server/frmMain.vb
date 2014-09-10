@@ -18,7 +18,7 @@ Public Class frmMain
             'Log("Connection received from: " & e.ClientIP)
             'Dim y As New clsUser
             Dim i As Integer
-            Dim ID As String = Game.GetNewPlayorId() ' playerCount + 1
+            Dim ID As String = Game.GetNewPlayerId() ' playerCount + 1
 
             Dim x As New Winsock(Me)
             wsk_Col.Add(x, ID)
@@ -34,8 +34,8 @@ Public Class frmMain
                 Exit Sub
             End If
 
-            RegisterPlayor(playerList, ID, e.ClientIP)
-            'playerList(playerCount) = New Playor
+            RegisterPlayer(playerList, ID, e.ClientIP)
+            'playerList(playerCount) = New Player
             'playerList(playerCount).ID = ID
             'playerList(playerCount).socketKey = ID 'wsk_Col.Count - 1
             'playerList(playerCount).myIPAddress = e.ClientIP
@@ -44,7 +44,7 @@ Public Class frmMain
             'playerCount += 1
 
             lblConnections.Text = wsk_Col.Count.ToString()
-            RefreshPlayorDisplay()
+            RefreshPlayerDisplay()
 
             'appEventLog_Write("connection request: " & e.ClientIP)
         Catch ex As Exception
@@ -95,7 +95,7 @@ Public Class frmMain
                 message.clientID = sender_key
                 Game.takeMessage(message)
             Next
-            Me.RefreshPlayorDisplay()
+            Me.RefreshPlayerDisplay()
         Catch ex As Exception
             appEventLog_Write("error Wsk_DataArrival:", ex)
         End Try
@@ -106,13 +106,13 @@ Public Class frmMain
             Dim sender_key As String = wsk_Col.GetKey(CType(sender, Winsock))
             wsk_Col.Remove(CType(sender, Winsock))
 
-            Dim playorDisconnect As Playor = FindPlayorById(Game.playerList, (sender_key))
-            Dim idx As Integer = Array.IndexOf(Game.playerList, playorDisconnect)
+            Dim PlayerDisconnect As Player = FindPlayerById(Game.playerList, (sender_key))
+            Dim idx As Integer = Array.IndexOf(Game.playerList, PlayerDisconnect)
             If (idx > -1) Then Game.playerList(idx) = Nothing
             'If cmdBegin.Enabled Then Exit Sub
             MsgBox("A client has been disconnected.", MsgBoxStyle.Critical)
             appEventLog_Write("client disconnected")
-            Me.RefreshPlayorDisplay()
+            Me.RefreshPlayerDisplay()
             'playerCount -= 1
         Catch ex As Exception
             appEventLog_Write("error Wsk_Disconnected:", ex)
@@ -225,7 +225,7 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             'Dim b As New System.Windows.Media.BrushConverter
             'b=
@@ -242,9 +242,9 @@ Public Class frmMain
             'when reset is pressed bring server back to state to start another experiment
 
             'disable timers
-            Timer1.Enabled = False
-            Timer2.Enabled = False
-            Timer3.Enabled = False
+            'Timer1.Enabled = False
+            'Timer2.Enabled = False
+            'Timer3.Enabled = False
 
             'close data files
             'If summaryDf IsNot Nothing Then summaryDf.Close()
@@ -270,7 +270,7 @@ Public Class frmMain
 
             DataGridView1.RowCount = 0
 
-            'TODO frmInstructions.Close()
+            RefreshPlayerDisplay()
 
         Catch ex As Exception
             appEventLog_Write("error cmdReset_Click:", ex)
@@ -281,7 +281,7 @@ Public Class frmMain
         Try
             'exit program
 
-            Timer1.Enabled = False
+            'Timer1.Enabled = False
             ShutDownServer()
 
             Me.Close()
@@ -298,7 +298,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
+    Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
 
         Catch ex As Exception
@@ -387,7 +387,7 @@ Public Class frmMain
         Interaction.Shell("notepad.exe " + Application.StartupPath + "\\symbols.txt")
     End Sub
 
-    Private Sub Timer3_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer3.Tick
+    Private Sub Timer3_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
 
         Catch ex As Exception
@@ -395,13 +395,13 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub cmdSetup2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSetup2.Click
-        Try
-            frmScoreMatrix.ShowDialog()
-        Catch ex As Exception
-            appEventLog_Write("error :", ex)
-        End Try
-    End Sub
+    'Private Sub cmdSetup2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSetup2.Click
+    '    Try
+    '        frmScoreMatrix.ShowDialog()
+    '    Catch ex As Exception
+    '        appEventLog_Write("error :", ex)
+    '    End Try
+    'End Sub
 
     Private Sub llESI_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llESI.LinkClicked
         Try
@@ -429,7 +429,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub RefreshPlayorDisplay()
+    Private Sub RefreshPlayerDisplay()
         lblConnections.Text = wsk_Col.Count.ToString()
 
         DataGridView1.RowCount = playerList.Length
@@ -478,18 +478,10 @@ Public Class frmMain
                      "_" & DateTime.Now.Minute & "_" & DateTime.Now.Second
 
             'create unique file name for storing data, CSVs are excel readable, Comma Separted Value files.
-            filename = "summary_data_" & tempTime & ".csv"
+            Game.filename = "summary_data_" & tempTime & ".csv"
             Dim di As New DirectoryInfo(Application.StartupPath & "\datafiles")
             If Not di.Exists Then di.Create()
             filename = di.FullName & "\" & filename
-
-            'summaryDf = File.CreateText(filename)
-            'str = "Period,data1,data2,data3"
-            'summaryDf.WriteLine(str)
-
-            ' currentPeriod = 1
-            'txtPeriod.Text = currentPeriod
-            checkin = 0
 
             'disable/enable buttons needed when the experiment starts
             cmdLoad.Enabled = False
@@ -502,24 +494,17 @@ Public Class frmMain
             cmdExchange.Enabled = False
 
             'filename2 = filename
-
-            'showInstructions = getINI(sfile, "gameSettings", "showInstructions")
-
-
             'signal clients to begin
-            'every group contains 2 playors
-            'playorlist 0,1 make a group , and 2,3 make a group and so on...
-            Group.MakeGroups(Game.playerList, Game.groupList, _
-                            Game.allVocabulary, Game.initScoreOfPlayor, _
-                            Game.cooperateMatrix, Game.competeMatrix, _
-                            Me.wsk_Col)
+            'every group contains 2 Players
+            'playerList 0,1 make a group , and 2,3 make a group and so on...
+            Game.MakeGroups(Me.wsk_Col)
+            Game.Begin()
+            'For i As Integer = 0 To Game.groupList.Length - 1
+            '    groupList(i).Begin()
+            'Next
 
-            For i As Integer = 0 To Game.groupList.Length - 1
-                groupList(i).Begin()
-            Next
-
-            checkin = 0
-            RefreshPlayorDisplay()
+            'checkin = 0
+            RefreshPlayerDisplay()
         Catch ex As Exception
             appEventLog_Write("error cmdBegin_Click:", ex)
         End Try
