@@ -9,6 +9,15 @@ Public Class Vocabulary
 
     Public m_privateList As String()()
 
+    Public ReadOnly Property LS() As Decimal
+        Get
+            'TODO
+            'LS = num of common list / num of total list(common+ private
+            Return CType(NumberOfPrivate, Decimal) / (CType(Me.NumberOfCommon, Decimal) + CType(Me.NumberOfPrivate, Decimal))
+        End Get
+    End Property
+
+   
     Public Sub New()
         m_meaning = New List(Of String)
         m_commlist = New String()() {}
@@ -260,52 +269,47 @@ Public Class Vocabulary
     ''' <remarks></remarks>
     Public Shared Sub WriteToCsv(ByVal vocabularyList As List(Of LC.Vocabulary), ByVal output As Stream)
         Dim writer As StreamWriter = New System.IO.StreamWriter(output, System.Text.Encoding.UTF8)
-        Try
-            writer.WriteLine("ID,ListType,Meaning,Symbol")
-            Dim sb As New StringBuilder()
-            For index As Integer = 0 To vocabularyList.Count - 1
-                'writer.WriteLine("voca id:" + index.ToString())
-                'writer.WriteLine("  Common list:")
-                'sb.Append(index.ToString())
-                'sb.Append(",")
-                'sb.Append("CommonList,")
-                For Each key As String In vocabularyList(index).Meanings
-                    'writer.Write("      Meaning:" + key + ">")
+        writer.WriteLine("ID,ListType,Meaning,Symbol")
+        Dim sb As New StringBuilder()
+        For index As Integer = 0 To vocabularyList.Count - 1
+            'writer.WriteLine("voca id:" + index.ToString())
+            'writer.WriteLine("  Common list:")
+            'sb.Append(index.ToString())
+            'sb.Append(",")
+            'sb.Append("CommonList,")
+            For Each key As String In vocabularyList(index).Meanings
+                'writer.Write("      Meaning:" + key + ">")
 
-                    For Each symbol As String In vocabularyList(index).GetCommonList(key)
-                        'writer.Write(symbol + ",")
-                        sb.Append(index.ToString())
-                        sb.Append(",CommonList,")
-                        sb.Append(key)
-                        sb.Append(",")
-                        sb.Append(symbol)
-                        writer.WriteLine(sb.ToString())
-                        sb.Remove(0, sb.Length)
-                    Next
-                    'writer.WriteLine()
+                For Each symbol As String In vocabularyList(index).GetCommonList(key)
+                    'writer.Write(symbol + ",")
+                    sb.Append(index.ToString())
+                    sb.Append(",CommonList,")
+                    sb.Append(key)
+                    sb.Append(",")
+                    sb.Append(symbol)
+                    writer.WriteLine(sb.ToString())
+                    sb.Remove(0, sb.Length)
                 Next
-                'writer.WriteLine("  Private list:")
-                For Each key As String In vocabularyList(index).Meanings
-                    'writer.Write("      Meaning:" + key + ">")
-
-                    For Each symbol As String In vocabularyList(index).GetPrivateList(key)
-                        ' writer.Write(symbol + ",")
-                        sb.Append(index.ToString())
-                        sb.Append(",PrivateList,")
-                        sb.Append(key)
-                        sb.Append(",")
-                        sb.Append(symbol)
-                        writer.WriteLine(sb.ToString())
-                        sb.Remove(0, sb.Length)
-                    Next
-                    'writer.WriteLine()
-                Next
+                'writer.WriteLine()
             Next
-            writer.Close()
-        Finally
-            output.Close()
-        End Try
+            'writer.WriteLine("  Private list:")
+            For Each key As String In vocabularyList(index).Meanings
+                'writer.Write("      Meaning:" + key + ">")
 
+                For Each symbol As String In vocabularyList(index).GetPrivateList(key)
+                    ' writer.Write(symbol + ",")
+                    sb.Append(index.ToString())
+                    sb.Append(",PrivateList,")
+                    sb.Append(key)
+                    sb.Append(",")
+                    sb.Append(symbol)
+                    writer.WriteLine(sb.ToString())
+                    sb.Remove(0, sb.Length)
+                Next
+                'writer.WriteLine()
+            Next
+        Next
+        writer.Close()
     End Sub
 
     Public Function ContainsSymbol(ByVal symbol As String) As Boolean
@@ -327,4 +331,6 @@ Public Class Vocabulary
         Next
         Return False
     End Function
+
+
 End Class
